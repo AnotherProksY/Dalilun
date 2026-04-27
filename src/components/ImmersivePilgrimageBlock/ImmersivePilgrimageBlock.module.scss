@@ -1,0 +1,37 @@
+.section {
+  padding: 80px 0 140px;
+}
+
+.title {
+  font-family: 'Manrope', sans-serif;
+  font-size: 40px;
+  font-weight: 800;
+  color: #fff;
+  margin: 0 0 16px;
+}
+
+.text {
+  font-family: 'Geologica', sans-serif;
+  font-size: 24px;
+  font-weight: 400;
+  color: #b3b3b3;
+  line-height: 32px;
+  max-width: 700px;
+  margin-bottom: 52px;
+}
+
+.videoWrap {
+  border-radius: 20px;
+  overflow: hidden;
+  width: 100%;
+  contain: content;
+}
+
+.video {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  transform: translateZ(0);
+  will-change: transform;
+}

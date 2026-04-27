@@ -1,0 +1,126 @@
+.root {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  background: transparent;
+  transition: background 0.2s ease;
+}
+
+.rootScrolled {
+  position: fixed;
+  background: #030303;
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 32px 0;
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+
+  svg {
+    display: block;
+  }
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.navLink {
+  font-family: 'Geologica', sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  color: #fff;
+  text-decoration: none;
+  opacity: 1;
+  transition: opacity 0.2s;
+
+  &:hover {
+    opacity: 0.9;
+  }
+}
+
+.langButton {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-family: 'Geologica', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  color: #fff;
+  opacity: 1;
+  transition: opacity 0.2s;
+
+  &:hover {
+    opacity: 0.9;
+  }
+}
+
+.langWrapper {
+  position: relative;
+}
+
+.chevron {
+  display: block;
+  flex-shrink: 0;
+  transition: transform 0.25s ease;
+  transform: rotate(180deg);
+  margin-top: 1px;
+}
+
+.chevronOpen {
+  transform: rotate(0deg);
+  margin-top: 1px;
+}
+
+.dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: #2e2e2e;
+  border-radius: 10px;
+  padding: 8px 0;
+  list-style: none;
+  margin: 0;
+  min-width: 92px;
+  z-index: 100;
+}
+
+.dropdownItem {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-family: 'Geologica', sans-serif;
+  font-size: 16px;
+  font-weight: 300;
+  color: #fff;
+  text-align: center;
+  transition: opacity 0.2s;
+
+  &:hover {
+    opacity: 0.7;
+  }
+}
+
+.dropdownItemActive {
+  font-weight: 500;
+}
