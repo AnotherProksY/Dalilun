@@ -1,0 +1,145 @@
+.section {
+  padding: 40px 0;
+}
+
+.inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+}
+
+.left {
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  font-family: 'Manrope', sans-serif;
+  font-size: 40px;
+  font-weight: 800;
+  color: #fff;
+  line-height: 56px;
+  margin-bottom: 32px;
+}
+
+.subtitle {
+  font-family: 'Geologica', sans-serif;
+  font-size: 24px;
+  font-weight: 400;
+  color: #b3b3b3;
+  line-height: 32px;
+  margin: 0;
+  max-width: 646px;
+}
+
+.features {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  margin-top: 52px;
+}
+
+.featureItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 24px;
+}
+
+.featureIcon {
+  flex-shrink: 0;
+  width: 64px;
+  height: 64px;
+  border-radius: 14px;
+  background: #2e2e2e;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.featureText {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.featureTitle {
+  font-family: 'Geologica', sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 32px;
+  color: #fff;
+}
+
+.featureDesc {
+  font-family: 'Geologica', sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  color: #b3b3b3;
+  line-height: 28px;
+  max-width: 490px;
+}
+
+.right {
+  display: flex;
+  justify-content: center;
+}
+
+.phoneWrap {
+  position: relative;
+  width: calc(714px * 9 / 19.5);
+}
+
+.phoneFrame {
+  position: relative;
+  width: 100%;
+  height: 714px;
+  overflow: hidden;
+}
+
+.phoneVideo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.phoneDynamicIsland {
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 28px;
+  background: #000;
+  border-radius: 20px;
+  z-index: 2;
+}
+
+.phoneStatusBar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  z-index: 2;
+}
+
+.phoneTime {
+  font-family: 'Manrope', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+  padding-top: 6px;
+}
+
+.phoneIcons {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding-top: 6px;
+}

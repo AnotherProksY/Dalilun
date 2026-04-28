@@ -1,8 +1,9 @@
 import { useEffect, useRef } from 'react'
-import ru from '@/locales/ru'
+import { useTranslation } from 'react-i18next'
 import styles from '@/components/ImmersivePilgrimageBlock/ImmersivePilgrimageBlock.module.scss'
 
 export function ImmersivePilgrimageBlock() {
+  const { t } = useTranslation()
   const videoRef = useRef<HTMLVideoElement>(null)
 
   useEffect(() => {
@@ -26,8 +27,8 @@ export function ImmersivePilgrimageBlock() {
 
   return (
     <section className={styles.section}>
-      <h2 className={styles.title}>{ru.immersivePilgrimage.title}</h2>
-      <p className={styles.text}>{ru.immersivePilgrimage.text}</p>
+      <h2 className={styles.title}>{t('immersivePilgrimage.title')}</h2>
+      <p className={styles.text}>{t('immersivePilgrimage.text')}</p>
       <div className={styles.videoWrap}>
         <video
           ref={videoRef}

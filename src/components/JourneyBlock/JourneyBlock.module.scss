@@ -1,0 +1,149 @@
+.section {
+  position: relative;
+  height: 140vh;
+  margin-top: -25vh;
+}
+
+.titleWrap {
+  width: 100%;
+}
+
+.pin {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 190px;
+  overflow: hidden;
+}
+
+.title {
+  font-family: 'Manrope', sans-serif;
+  font-size: 40px;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: 0.4px;
+  line-height: 56px;
+  margin: 0;
+}
+
+.stage {
+  position: relative;
+  width: 569px;
+  height: 380px;
+}
+
+.logoSvg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 631px;
+  height: 200px;
+  will-change: transform, opacity;
+}
+
+.lineSvg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  will-change: opacity;
+}
+
+.label {
+  position: absolute;
+  will-change: opacity;
+  display: flex;
+  gap: 12px;
+}
+
+// Текст слева от цифры: блок сдвигается так, что правый край цифры = точка на линии
+.textPosLeft {
+  flex-direction: row;
+  align-items: start;
+  transform: translate(-100%, -50%);
+
+  .stepTextWrap {
+    align-items: flex-end;
+    text-align: right;
+  }
+
+  .stepTitle,
+  .stepText {
+    text-align: right;
+  }
+}
+
+// Текст справа от цифры: левый край цифры = точка на линии
+.textPosRight {
+  flex-direction: row;
+  align-items: start;
+  transform: translateY(-50%);
+
+  .stepTextWrap {
+    align-items: flex-start;
+    text-align: left;
+  }
+}
+
+// Текст снизу от цифры: центр кружка = точка на линии
+.textPosBottom {
+  flex-direction: column;
+  align-items: flex-start;
+  transform: translate(-50%, -32px);
+}
+
+// Текст сверху от цифры: центр кружка = точка на линии, блок уходит вверх
+.textPosTop {
+  flex-direction: column;
+  align-items: flex-start;
+  transform: translate(-50%, calc(-100% + 32px));
+}
+
+.stepNum {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background:
+    radial-gradient(ellipse at 100% 100%, #00ba3d 0%, #01521d 100%),
+    radial-gradient(ellipse at 100% 100%, #00ba3d 0%, #01521d 100%), #01521d;
+  font-family: 'Geologica', sans-serif;
+  font-size: 40px;
+  font-weight: 400;
+  line-height: 72px;
+  color: #fff;
+  flex-shrink: 0;
+  margin-bottom: 2px;
+  user-select: none;
+}
+
+.stepTextWrap {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.stepTitle {
+  font-family: 'Geologica', sans-serif;
+  font-size: 24px;
+  font-weight: 500;
+  color: #fff;
+  line-height: 32px;
+  margin: 0;
+}
+
+.stepText {
+  font-family: 'Geologica', sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  color: #b3b3b3;
+  line-height: 28px;
+}

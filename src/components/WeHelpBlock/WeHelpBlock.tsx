@@ -1,12 +1,9 @@
 import { useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import styles from '@/components/WeHelpBlock/WeHelpBlock.module.scss'
-import img1 from '@/assets/images/we-help-1.webp'
-import img2 from '@/assets/images/we-help-2.webp'
-import img3 from '@/assets/images/we-help-3.webp'
 import { ParticleCard, GlobalSpotlight, useMobileDetection } from './MagicBento'
 
-const IMAGES = [img1, img2, img3]
+const IMAGES = ['/we-help-1.webp', '/we-help-2.webp', '/we-help-3.webp']
 const GLOW_COLOR = '0, 180, 55'
 
 export function WeHelpBlock() {

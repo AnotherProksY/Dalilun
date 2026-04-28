@@ -30,6 +30,53 @@ const en = {
       },
     ],
   },
+  journey: {
+    title: 'From Shahada to Hajj',
+    steps: [
+      {
+        title: 'Foundations of Faith',
+        text: 'Understanding the Shahada, pillars of Islam, and core concepts that become the foundation of your further path',
+      },
+      {
+        title: 'Daily Practice',
+        text: 'Learning prayer, supplications, and everyday religious acts to step by step move from knowledge to practice',
+      },
+      {
+        title: 'Fasting and Purification',
+        text: 'Getting acquainted with Ramadan, Zakat, and inner discipline as part of a conscious Muslim life',
+      },
+      {
+        title: 'Preparing for Umrah',
+        text: 'Step-by-step understanding of ihram and Umrah rituals with 3D simulation support for confidence before the trip',
+      },
+      {
+        title: 'The Path to Hajj',
+        text: 'A complete preparation route for Hajj with VR walkthrough to understand each stage in advance and feel ready',
+      },
+    ],
+  },
+  immersivePilgrimage: {
+    title: 'Immersive Pilgrimage',
+    text: 'Immerse yourself in the atmosphere of Umrah and Hajj through 3D and VR technologies — experiencing every ritual as if you were on sacred ground',
+  },
+  aiMentorBlock: {
+    title: 'Your AI Mentor in Faith',
+    subtitle: 'Learn and ask questions at any time. A mentor that understands your context, answers thoroughly, and helps you grasp deeper meaning',
+    features: [
+      {
+        title: 'Understands you',
+        text: 'Adapts to your level and goals',
+      },
+      {
+        title: 'Learning through dialogue',
+        text: 'Communicate just as you would with a real teacher',
+      },
+      {
+        title: 'Provides verified knowledge',
+        text: 'All answers are based on reliable Islamic sources',
+      },
+    ],
+  },
   simpleCtaBlock: {
     title: 'With us, the complex becomes simple',
     cta: 'Start My Journey',
@@ -55,6 +102,7 @@ const en = {
     validationGoal: 'Please select an option',
     validationConsent: 'Your consent is required',
   },
+  pageTitle: 'Dalilun - Your Personal Path in Islam',
   footer: {
     scrollUp: 'Back to top',
     privacy: 'Privacy Policy',

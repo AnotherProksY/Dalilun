@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { CtaButton } from '@/components/UI/CtaButton/CtaButton'
 import { Icon } from '@/components/UI/Icon/Icon'
@@ -21,6 +21,18 @@ export function ContactFormBlock() {
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const [consent, setConsent] = useState(false)
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
+
+  const dropdownRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    function handleOutsideClick(e: MouseEvent) {
+      if (dropdownOpen && dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setDropdownOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleOutsideClick)
+    return () => document.removeEventListener('mousedown', handleOutsideClick)
+  }, [dropdownOpen])
 
   const [contactTouched, setContactTouched] = useState(false)
   const [nameTouched, setNameTouched] = useState(false)
@@ -109,7 +121,7 @@ export function ContactFormBlock() {
           </div>
 
           <div className={styles.fieldWrapper}>
-            <div className={styles.dropdownWrapper}>
+            <div className={styles.dropdownWrapper} ref={dropdownRef}>
               <button
                 type='button'
                 className={[
