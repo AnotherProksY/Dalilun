@@ -15,7 +15,7 @@
 
 .left {
   position: relative;
-  min-height: 582px;
+  height: 100%;
   border-radius: 20px;
   background-image: url('/bg-card-form.webp');
   background-size: cover;
@@ -25,10 +25,6 @@
   display: flex;
   align-items: flex-end;
   padding: 20px;
-
-  @media (max-width: 768px) {
-    min-height: 200px;
-  }
 }
 
 .sideText {
@@ -39,6 +35,7 @@
   color: #fff;
   line-height: 56px;
   max-width: 420px;
+  user-select: none;
 
   @media (max-width: 1024px) {
     font-size: 32px;
@@ -48,55 +45,74 @@
 
 .right {
   display: flex;
+  align-items: start;
+  justify-content: start;
+  height: 100%;
   flex-direction: column;
-  gap: 16px;
 }
 
 .title {
-  font-family: 'Geologica', sans-serif;
-  font-size: 32px;
-  font-weight: 700;
+  font-family: 'Manrope', sans-serif;
+  font-size: 40px;
+  font-weight: 800;
   color: #fff;
-
-  @media (max-width: 1024px) {
-    font-size: 26px;
-  }
+  line-height: 56px;
+  margin-bottom: 50px;
 }
 
 .formLabel {
-  font-size: 14px;
-  font-weight: 600;
+  font-size: 24px;
+  font-weight: 500;
+  font-family: 'Geologica', sans-serif;
   color: #fff;
-  opacity: 0.7;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  margin-bottom: 28px;
 }
 
 .form {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 20px;
+  width: 100%;
 }
 
 .input {
   width: 100%;
-  padding: 16px 20px;
-  border: none;
-  border-radius: 12px;
-  background-color: #111;
+  height: 80px;
+  padding: 26px 24px;
+  border: 2px solid transparent;
+  border-radius: 20px;
+  background-color: #030303;
   color: #fff;
-  font-family: 'Manrope', sans-serif;
-  font-size: 16px;
+  line-height: 28px;
+  font-family: 'Geologica', sans-serif;
+  font-size: 20px;
+  font-weight: 400;
   outline: none;
-  transition: background-color 0.2s;
 
   &::placeholder {
-    color: rgba(255, 255, 255, 0.4);
+    color: #b3b3b3;
   }
 
   &:focus {
-    background-color: #1a1a1a;
+    background-color: #030303;
   }
+}
+
+.inputError {
+  border-color: #DC4446;
+}
+
+.fieldWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.fieldError {
+  font-size: 14px;
+  font-family: 'Geologica', sans-serif;
+  color: #DC4446;
+  padding-left: 8px;
 }
 
 .dropdownWrapper {
@@ -111,7 +127,7 @@
   text-align: left;
 
   span {
-    color: rgba(255, 255, 255, 0.4);
+    color: #b3b3b3;
   }
 }
 
@@ -123,32 +139,46 @@
 
 .dropdownArrow {
   flex-shrink: 0;
-  color: rgba(255, 255, 255, 0.5);
+  color: #ffffff;
   transition: transform 0.2s;
+  transform: rotate(180deg);
 }
 
 .dropdownArrowOpen {
-  transform: rotate(180deg);
+  transform: rotate(0deg);
 }
 
 .dropdownList {
   position: absolute;
-  top: calc(100% + 4px);
+  top: calc(100% + 8px);
   left: 0;
   right: 0;
-  background-color: #111;
-  border-radius: 12px;
-  overflow: hidden;
+  background-color: #030303;
+  border-radius: 20px;
   z-index: 10;
-  list-style: none;
+  border: 1px solid #01521d;
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transform: translateY(-8px);
+  transition:
+    grid-template-rows 0.25s ease,
+    opacity 0.25s ease,
+    transform 0.25s ease;
+  pointer-events: none;
 }
 
-.dropdownItem {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+.dropdownListOpen {
+  grid-template-rows: 1fr;
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
 
-  &:last-child {
-    border-bottom: none;
-  }
+.dropdownListInner {
+  overflow: hidden;
+  list-style: none;
+  padding: 16px;
 }
 
 .dropdownOption {
@@ -156,14 +186,16 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 14px 20px;
+  padding: 22px 24px;
   background: none;
   border: none;
   color: #fff;
-  font-family: 'Manrope', sans-serif;
-  font-size: 16px;
+  font-family: 'Geologica', sans-serif;
+  font-size: 20px;
+  font-weight: 400;
   cursor: pointer;
   text-align: left;
+  border-radius: 16px;
   transition: background-color 0.15s;
 
   &:hover {
@@ -171,43 +203,58 @@
   }
 }
 
-.dropdownOptionActive {
-  background-color: #1c3d28;
-}
-
 .dot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background-color: #00ba3d;
+  background-color: #38ff7d;
   flex-shrink: 0;
 }
 
 .consentLabel {
   display: flex;
   align-items: flex-start;
-  gap: 10px;
-  font-size: 14px;
-  color: rgba(255, 255, 255, 0.7);
+  gap: 12px;
+  font-size: 20px;
+  font-family: 'Geologica', sans-serif;
+  font-weight: 400;
+  color: #ffffff;
   cursor: pointer;
+  user-select: none;
+  margin: 4px 0;
 }
 
 .checkbox {
+  appearance: none;
   margin-top: 2px;
-  width: 18px;
-  height: 18px;
+  width: 24px;
+  height: 24px;
   flex-shrink: 0;
-  accent-color: #00ba3d;
+  border: 2.5px solid #fff;
+  border-radius: 7px;
+  background-color: transparent;
   cursor: pointer;
+  transition: background-color 0.15s;
+
+  &:checked {
+    background-color: #258645;
+    border-color: #258645;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='M15.2073 5.68298L7.18235 13.708C6.99483 13.8954 6.74058 14.0006 6.47547 14.0006C6.21037 14.0006 5.95612 13.8954 5.7686 13.708L1.29235 9.20798C1.10515 9.02048 1 8.76636 1 8.50141C1 8.23646 1.10515 7.98234 1.29235 7.79485L2.54235 6.54485C2.72976 6.35822 2.98348 6.25344 3.24797 6.25344C3.51247 6.25344 3.76618 6.35822 3.9536 6.54485L6.50047 9.01485L12.548 3.04173C12.7354 2.8549 12.9893 2.75 13.2539 2.75C13.5186 2.75 13.7724 2.8549 13.9598 3.04173L15.2067 4.26298C15.3005 4.3559 15.3749 4.46647 15.4258 4.5883C15.4766 4.71014 15.5028 4.84083 15.5028 4.97285C15.5029 5.10486 15.4768 5.23557 15.4261 5.35746C15.3754 5.47934 15.301 5.58997 15.2073 5.68298Z' fill='white'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 14px 14px;
+  }
 }
 
 .consentLink {
-  color: rgba(255, 255, 255, 0.7);
+  color: #fff;
   text-decoration: underline;
   text-underline-offset: 2px;
+  transition: opacity 0.2s;
+  opacity: 1;
 
   &:hover {
-    color: #fff;
+    opacity: 0.9;
   }
 }
 
@@ -218,13 +265,51 @@
   padding: 16px 42px;
 }
 
-.successMessage {
-  font-size: 18px;
-  color: #00ba3d;
-  padding: 24px 0;
+.overlay {
+  position: fixed;
+  inset: 0;
+  background-color: #4c4c4c99;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal {
+  background-color: #202020;
+  border-radius: 20px;
+  padding: 48px;
+  max-width: 652px;
+  width: calc(100% - 32px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.modalTitle {
+  font-family: 'Manrope', sans-serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 44px;
+  margin-bottom: 20px;
+}
+
+.modalSubtitle {
+  font-family: 'Geologica', sans-serif;
+  font-size: 24px;
+  font-weight: 400;
+  color: #b3b3b3;
+  margin-bottom: 44px;
+}
+
+.modalButton {
+  min-width: 286px;
 }
 
 .errorMessage {
   font-size: 14px;
-  color: #ff4d4d;
+  font-family: 'Geologica', sans-serif;
+  color: #DC4446;
 }
