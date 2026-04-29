@@ -1,5 +1,6 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { Icon } from '@/components/UI/Icon/Icon'
 import { Container } from '@/components/UI/Container/Container'
 import styles from '@/components/AiMentorBlock/AiMentorBlock.module.scss'
 
@@ -8,6 +9,13 @@ const FEATURE_ICON_IDS = ['user', 'ai-mentor', 'fact-check']
 export function AiMentorBlock() {
   const { t, i18n } = useTranslation()
   const videoRef = useRef<HTMLVideoElement>(null)
+  const [isMobile, setIsMobile] = useState(() => window.innerWidth <= 767)
+
+  useEffect(() => {
+    const onResize = () => setIsMobile(window.innerWidth <= 767)
+    window.addEventListener('resize', onResize, { passive: true })
+    return () => window.removeEventListener('resize', onResize)
+  }, [])
 
   const videoSrc =
     i18n.language === 'ru' ? '/mobile-video.mp4' : '/mobile-video-english.mp4'
@@ -56,9 +64,12 @@ export function AiMentorBlock() {
               {features.map((feature, i) => (
                 <div key={i} className={styles.featureItem}>
                   <div className={styles.featureIcon}>
-                    <svg width='40' height='40' aria-hidden='true'>
-                      <use href={`/icons.svg#${FEATURE_ICON_IDS[i]}`} />
-                    </svg>
+                    <Icon
+                      id={FEATURE_ICON_IDS[i]}
+                      width={isMobile ? 28 : 40}
+                      height={isMobile ? 28 : 40}
+                      viewBox='0 0 40 40'
+                    />
                   </div>
                   <div className={styles.featureText}>
                     <p className={styles.featureTitle}>{feature.title}</p>

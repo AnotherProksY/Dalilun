@@ -1,10 +1,18 @@
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Icon } from '@/components/UI/Icon/Icon'
 import styles from '@/components/Footer/Footer.module.scss'
 
 export function Footer() {
   const { t } = useTranslation()
+  const [isMobile, setIsMobile] = useState(() => window.innerWidth <= 768)
   const scrollTop = () => window.scrollTo({ top: 0, behavior: 'smooth' })
+
+  useEffect(() => {
+    const onResize = () => setIsMobile(window.innerWidth <= 768)
+    window.addEventListener('resize', onResize, { passive: true })
+    return () => window.removeEventListener('resize', onResize)
+  }, [])
 
   const navLinks = [
     { key: 'nav.about', label: t('nav.about') },
@@ -18,7 +26,7 @@ export function Footer() {
       <div className={styles.inner}>
         <div className={styles.top}>
           <a href="/" className={styles.logo} aria-label="Dalilun">
-            <Icon id="logo" width={114} height={36} />
+            <Icon id="logo" width={isMobile ? 101 : 114} height={isMobile ? 32 : 36} viewBox="0 0 114 36" />
           </a>
 
           <nav className={styles.nav}>

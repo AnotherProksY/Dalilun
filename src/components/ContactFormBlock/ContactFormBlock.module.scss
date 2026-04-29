@@ -1,4 +1,16 @@
 .section {
+  padding: 0 24px;
+
+  @media (min-width: 768px) {
+    padding: 0 40px;
+  }
+
+  @media (min-width: 1480px) {
+    padding: 0;
+  }
+}
+
+.sectionInner {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 20px;
@@ -10,6 +22,12 @@
 
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .left {
+    display: none !important;
   }
 }
 
@@ -58,6 +76,12 @@
   color: #fff;
   line-height: 56px;
   margin-bottom: 50px;
+
+  @media (max-width: 768px) {
+    font-size: 28px;
+    line-height: 38px;
+    margin-bottom: 60px;
+  }
 }
 
 .formLabel {
@@ -66,6 +90,11 @@
   font-family: 'Geologica', sans-serif;
   color: #fff;
   margin-bottom: 28px;
+
+  @media (max-width: 768px) {
+    font-size: 20px;
+    margin-bottom: 26px;
+  }
 }
 
 .form {
@@ -96,10 +125,17 @@
   &:focus {
     background-color: #030303;
   }
+
+  @media (max-width: 768px) {
+    height: 60px;
+    padding: 18px 20px;
+    font-size: 16px;
+    border-radius: 16px;
+  }
 }
 
 .inputError {
-  border-color: #DC4446;
+  border-color: #dc4446;
 }
 
 .fieldWrapper {
@@ -111,7 +147,7 @@
 .fieldError {
   font-size: 14px;
   font-family: 'Geologica', sans-serif;
-  color: #DC4446;
+  color: #dc4446;
   padding-left: 8px;
 }
 
@@ -203,6 +239,44 @@
   }
 }
 
+.dropdownOptionActive {
+  background-color: #1c3d28;
+}
+
+.bottomSheetListInner {
+  list-style: none;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.bottomSheetOption {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px 24px;
+  background: none;
+  border: 1px solid #6c6c6c;
+  color: #fff;
+  font-family: 'Geologica', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  cursor: pointer;
+  text-align: left;
+  border-radius: 16px;
+  transition:
+    background 0.15s,
+    border-color 0.15s;
+
+}
+
+.bottomSheetOptionActive {
+  background: linear-gradient(135deg, #243d2b, #1f3e27);
+  border-color: transparent;
+}
+
 .dot {
   width: 8px;
   height: 8px;
@@ -222,6 +296,13 @@
   cursor: pointer;
   user-select: none;
   margin: 4px 0;
+
+  @media (max-width: 768px) {
+    font-size: 12px;
+    line-height: 16px;
+    align-items: center;
+    gap: 8px;
+  }
 }
 
 .checkbox {
@@ -235,6 +316,12 @@
   background-color: transparent;
   cursor: pointer;
   transition: background-color 0.15s;
+
+  @media (max-width: 768px) {
+    width: 20px;
+    height: 20px;
+    border-radius: 5px;
+  }
 
   &:checked {
     background-color: #258645;
@@ -285,6 +372,10 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
+
+  @media (max-width: 768px) {
+    padding: 24px;
+  }
 }
 
 .modalTitle {
@@ -294,6 +385,12 @@
   color: #fff;
   line-height: 44px;
   margin-bottom: 20px;
+
+  @media (max-width: 768px) {
+    font-size: 18px;
+    line-height: 24px;
+    margin-bottom: 12px;
+  }
 }
 
 .modalSubtitle {
@@ -302,6 +399,12 @@
   font-weight: 400;
   color: #b3b3b3;
   margin-bottom: 44px;
+
+  @media (max-width: 768px) {
+    font-size: 16px;
+    line-height: 20px;
+    margin-bottom: 24px;
+  }
 }
 
 .modalButton {
@@ -311,5 +414,84 @@
 .errorMessage {
   font-size: 14px;
   font-family: 'Geologica', sans-serif;
-  color: #DC4446;
+  color: #dc4446;
+}
+
+.bottomSheetOverlay {
+  display: none;
+
+  @media (max-width: 768px) {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 100;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+}
+
+.bottomSheetOverlayOpen {
+  @media (max-width: 768px) {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+.bottomSheet {
+  display: none;
+
+  @media (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #2e2e2e;
+    border-radius: 20px 20px 0 0;
+    z-index: 101;
+    transform: translateY(100%);
+    transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+}
+
+.bottomSheetOpen {
+  @media (max-width: 768px) {
+    transform: translateY(0);
+  }
+}
+
+.bottomSheetHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 16px 16px;
+}
+
+.bottomSheetTitle {
+  font-family: 'Geologica', sans-serif;
+  font-size: 20px;
+  font-weight: 500;
+  color: #fff;
+}
+
+.bottomSheetClose {
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bottomSheetConfirm {
+  padding: 16px 16px 24px;
+
+  button {
+    width: 100%;
+  }
 }

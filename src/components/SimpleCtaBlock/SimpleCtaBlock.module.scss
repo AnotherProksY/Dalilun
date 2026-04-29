@@ -1,6 +1,6 @@
 .section {
   position: relative;
-  padding: 90px 0;
+  padding: 48px 24px;
   background: #030303;
   opacity: 0.95;
   display: flex;
@@ -14,6 +14,14 @@
     black 75%,
     transparent 100%
   );
+
+  @media (min-width: 768px) {
+    padding: 90px 40px;
+  }
+
+  @media (min-width: 1480px) {
+    padding: 90px 0;
+  }
 }
 
 .title {
@@ -26,4 +34,10 @@
   margin: 0 auto;
   text-align: center;
   margin-bottom: 28px;
+
+  @media (max-width: 768px) {
+    font-size: 28px;
+    line-height: 38px;
+    margin-bottom: 24px;
+  }
 }

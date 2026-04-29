@@ -20,7 +20,7 @@ const en = {
       },
       {
         tag: 'Young Muslims',
-        title: 'Want to strengthen your Iman and stay connected to tradition?',
+        title: 'Want to strengthen your iman and stay connected to tradition?',
         text: 'You know faith matters, but you\'re afraid to make mistakes in prayer or the basics. Our AI mentor answers without judgment 24/7',
       },
       {
@@ -88,8 +88,9 @@ const en = {
     namePlaceholder: 'What should we call you?',
     goalPlaceholder: 'What interests you most?*',
     goalOptions: ['Learning Islam', 'Preparing for Pilgrimage', 'I want to learn about the project'],
-    consent: 'I give ',
-    consentLink: 'consent to personal data processing',
+    consentBefore: 'I have read the ',
+    consentLink: 'Personal Data Processing Consent',
+    consentAfter: ' and accept its terms',
     submit: 'Start My Journey',
     sideText: 'Leave your contact — we\'ll tell you about the launch first',
     successMessage: 'Thank you! We will contact you.',
@@ -101,6 +102,7 @@ const en = {
     validationContactFormat: 'Invalid format',
     validationGoal: 'Please select an option',
     validationConsent: 'Your consent is required',
+    confirm: 'Confirm',
   },
   pageTitle: 'Dalilun - Your Personal Path in Islam',
   footer: {

@@ -1,20 +1,19 @@
 .footer {
   background: #030303;
-  padding: 48px 0;
-  mask-image: linear-gradient(
-    to bottom,
-    transparent 0%,
-    black 30%,
-    black 100%
-  );
+  mask-image: linear-gradient(to bottom, transparent 0%, black 30%, black 100%);
 }
 
 .inner {
   max-width: 1440px;
+  padding: 60px 40px 48px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 84px;
+  gap: 75px;
+
+  @media (min-width: 1480px) {
+    padding: 48px 0;
+  }
 }
 
 .top {
@@ -78,6 +77,10 @@
   font-family: 'Geologica', sans-serif;
   font-size: 16px;
   color: #b3b3b3;
+
+  span {
+    text-wrap: nowrap;
+  }
 }
 
 .legal {
@@ -94,5 +97,52 @@
 
   &:hover {
     opacity: 0.7;
+  }
+}
+
+@media (max-width: 768px) {
+  .inner {
+    gap: 20px;
+    padding: 40px 24px 28px;
+  }
+
+  .top {
+    flex-wrap: wrap;
+    gap: 20px 0;
+  }
+
+  .logo {
+    order: 1;
+  }
+
+  .scrollBtn {
+    order: 2;
+    margin-left: auto;
+  }
+
+  .nav {
+    order: 3;
+    flex-basis: 100%;
+    gap: 12px;
+  }
+
+  .navLink {
+    font-size: 12px;
+  }
+
+  .bottom {
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: flex-start;
+    font-size: 12px;
+    gap: 16px;
+  }
+
+  .legal {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    font-size: 12px;
+    margin-left: 0;
   }
 }

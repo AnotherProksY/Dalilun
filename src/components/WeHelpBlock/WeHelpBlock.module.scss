@@ -1,5 +1,13 @@
 .section {
-  padding: 80px 0 140px;
+  padding: 0 24px;
+
+  @media (min-width: 768px) {
+    padding: 0 40px;
+  }
+
+  @media (min-width: 1480px) {
+    padding: 80px 0 140px;
+  }
 }
 
 .heading {
@@ -8,12 +16,21 @@
   font-weight: 800;
   color: #fff;
   margin-bottom: 52px;
+
+  @media (max-width: 500px) {
+    font-size: 28px;
+    margin-bottom: 38px;
+  }
 }
 
 .grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
+
+  @media (max-width: 1169px) {
+    grid-template-columns: 1fr;
+  }
 }
 
 .card {
@@ -67,6 +84,10 @@
   max-height: 286px;
   overflow: hidden;
   border-bottom: 1px solid #ffffff;
+
+  @media (max-width: 500px) {
+    max-height: 180px;
+  }
 }
 
 .image {
@@ -114,6 +135,12 @@
   font-weight: 700;
   color: #fff;
   z-index: 2;
+
+  @media (max-width: 500px) {
+    font-size: 20px;
+    bottom: 12px;
+    left: 16px;
+  }
 }
 
 .body {
@@ -122,6 +149,10 @@
   flex-direction: column;
   gap: 12px;
   flex: 1;
+
+  @media (max-width: 500px) {
+    padding: 16px;
+  }
 }
 
 .cardTitle {
@@ -131,6 +162,11 @@
   color: #fff;
   line-height: 28px;
   margin: 0;
+
+  @media (max-width: 500px) {
+    font-size: 16px;
+    line-height: 20px;
+  }
 }
 
 .cardText {
@@ -140,4 +176,9 @@
   color: #b3b3b3;
   line-height: 28px;
   margin: 0;
+
+  @media (max-width: 500px) {
+    font-size: 16px;
+    line-height: 20px;
+  }
 }

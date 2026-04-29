@@ -1,7 +1,12 @@
 .section {
   position: relative;
+  display: block;
   height: 140vh;
   margin-top: -25vh;
+
+  @media (max-width: 1300px) {
+    display: none;
+  }
 }
 
 .titleWrap {
