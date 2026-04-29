@@ -75,7 +75,7 @@
   font-weight: 800;
   color: #fff;
   line-height: 56px;
-  margin-bottom: 50px;
+  margin-bottom: 26px;
 
   @media (max-width: 768px) {
     font-size: 28px;
@@ -331,6 +331,10 @@
     background-position: center;
     background-size: 14px 14px;
   }
+}
+
+.checkboxError {
+  border-color: #dc4446;
 }
 
 .consentLink {

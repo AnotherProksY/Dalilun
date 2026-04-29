@@ -4,7 +4,7 @@ import { Icon } from '@/components/UI/Icon/Icon'
 import { Container } from '@/components/UI/Container/Container'
 import styles from '@/components/AiMentorBlock/AiMentorBlock.module.scss'
 
-const FEATURE_ICON_IDS = ['user', 'ai-mentor', 'fact-check']
+const FEATURE_ICON_IDS = ['ai-mentor', 'user', 'fact-check']
 
 export function AiMentorBlock() {
   const { t, i18n } = useTranslation()
@@ -80,18 +80,16 @@ export function AiMentorBlock() {
             </div>
           </div>
           <div className={styles.right}>
-            <div className={styles.phoneWrap}>
-              <div className={styles.phoneFrame}>
-                <video
-                  ref={videoRef}
-                  className={styles.phoneVideo}
-                  src={videoSrc}
-                  muted
-                  loop
-                  playsInline
-                  preload='metadata'
-                />
-              </div>
+            <div className={styles.phoneFrame}>
+              <video
+                ref={videoRef}
+                className={styles.phoneVideo}
+                src={videoSrc}
+                muted
+                loop
+                playsInline
+                preload='metadata'
+              />
             </div>
           </div>
         </div>

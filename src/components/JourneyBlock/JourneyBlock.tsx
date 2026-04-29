@@ -15,7 +15,7 @@ const DOT_POSITIONS: [number, number][] = [
   [92, 62],
 ]
 
-const LABEL_TEXT_WIDTHS: number[] = [297, 313, 284, 354, 330]
+const LABEL_TEXT_WIDTHS: number[] = [279, 313, 284, 354, 330]
 
 // Позиция текста относительно цифры. DOT_POSITIONS — координаты центра кружка.
 const LABEL_TEXT_POSITION: ('left' | 'right' | 'top' | 'bottom')[] = [

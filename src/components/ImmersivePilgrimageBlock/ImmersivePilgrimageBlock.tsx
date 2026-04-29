@@ -10,19 +10,30 @@ export function ImmersivePilgrimageBlock() {
     const el = videoRef.current
     if (!el) return
 
+    let timer: ReturnType<typeof setTimeout> | null = null
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          el.play()
+          timer = setTimeout(() => {
+            el.play()
+          }, 1000)
         } else {
+          if (timer) {
+            clearTimeout(timer)
+            timer = null
+          }
           el.pause()
         }
       },
-      { threshold: 1 },
+      { threshold: 0.7 },
     )
 
     observer.observe(el)
-    return () => observer.disconnect()
+    return () => {
+      observer.disconnect()
+      if (timer) clearTimeout(timer)
+    }
   }, [])
 
   return (

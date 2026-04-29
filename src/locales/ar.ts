@@ -93,7 +93,6 @@ const ar = {
     consentAfter: ' وأقبل شروطها',
     submit: 'ابدأ رحلتي',
     sideText: 'اترك بياناتك — سنخبرك عن الإطلاق أولاً',
-    successMessage: 'شكراً! سنتواصل معك قريباً.',
     successTitle: 'تم إرسال بياناتك',
     successSubtitle: 'سنبقيك على اطلاع دائم',
     successButton: 'حسناً',

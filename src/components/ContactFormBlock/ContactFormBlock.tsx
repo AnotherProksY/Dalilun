@@ -70,6 +70,7 @@ export function ContactFormBlock() {
   const [contactTouched, setContactTouched] = useState(false)
   const [nameTouched, setNameTouched] = useState(false)
   const [goalTouched, setGoalTouched] = useState(false)
+  const [consentError, setConsentError] = useState(false)
 
   const contactError = !contact
     ? t('contactForm.validationContact')
@@ -84,7 +85,7 @@ export function ContactFormBlock() {
 
   const goalError = !goal ? t('contactForm.validationGoal') : null
 
-  const isFormValid = !contactError && !goalError && consent
+  const isFormValid = !contactError && !goalError
 
   function resetForm() {
     setContact('')
@@ -95,6 +96,7 @@ export function ContactFormBlock() {
     setContactTouched(false)
     setNameTouched(false)
     setGoalTouched(false)
+    setConsentError(false)
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -102,6 +104,10 @@ export function ContactFormBlock() {
     setContactTouched(true)
     setGoalTouched(true)
     if (!isFormValid) return
+    if (!consent) {
+      setConsentError(true)
+      return
+    }
     setStatus('loading')
     try {
       await fetch('https://jsonplaceholder.typicode.com/posts', {
@@ -292,26 +298,39 @@ export function ContactFormBlock() {
               </p>
             )}
 
-            <label className={styles.consentLabel}>
-              <input
-                type='checkbox'
-                className={styles.checkbox}
-                checked={consent}
-                onChange={(e) => setConsent(e.target.checked)}
-              />
-              <span>
-                {t('contactForm.consentBefore')}
-                <a href='#' className={styles.consentLink}>
-                  {t('contactForm.consentLink')}
-                </a>
-                {t('contactForm.consentAfter')}
-              </span>
-            </label>
+            <div className={styles.fieldWrapper}>
+              <label className={styles.consentLabel}>
+                <input
+                  type='checkbox'
+                  className={[
+                    styles.checkbox,
+                    consentError ? styles.checkboxError : '',
+                  ].join(' ')}
+                  checked={consent}
+                  onChange={(e) => {
+                    setConsent(e.target.checked)
+                    if (e.target.checked) setConsentError(false)
+                  }}
+                />
+                <span>
+                  {t('contactForm.consentBefore')}
+                  <a href='#' className={styles.consentLink}>
+                    {t('contactForm.consentLink')}
+                  </a>
+                  {t('contactForm.consentAfter')}
+                </span>
+              </label>
+              {consentError && (
+                <p className={styles.fieldError}>
+                  {t('contactForm.validationConsent')}
+                </p>
+              )}
+            </div>
 
             <CtaButton
               type='submit'
               className={styles.submitButton}
-              disabled={status === 'loading' || !isFormValid}
+              disabled={status === 'loading'}
             >
               {t('contactForm.submit')}
             </CtaButton>

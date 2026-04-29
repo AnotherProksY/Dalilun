@@ -1,8 +1,8 @@
 .section {
   position: relative;
   display: block;
-  height: 140vh;
-  margin-top: -25vh;
+  height: clamp(140vh, 100vh, 140vh);
+  margin-top: clamp(-25vh, -15vh, -25vh);
 
   @media (max-width: 1300px) {
     display: none;
@@ -21,7 +21,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 190px;
+  gap: clamp(40px, 15vh, 190px);
   overflow: hidden;
 }
 
@@ -64,10 +64,9 @@
   position: absolute;
   will-change: opacity;
   display: flex;
-  gap: 12px;
+  gap: 24px;
 }
 
-// Текст слева от цифры: блок сдвигается так, что правый край цифры = точка на линии
 .textPosLeft {
   flex-direction: row;
   align-items: start;
@@ -76,6 +75,7 @@
   .stepTextWrap {
     align-items: flex-end;
     text-align: right;
+    margin-top: 15px;
   }
 
   .stepTitle,
@@ -84,7 +84,6 @@
   }
 }
 
-// Текст справа от цифры: левый край цифры = точка на линии
 .textPosRight {
   flex-direction: row;
   align-items: start;
@@ -93,17 +92,16 @@
   .stepTextWrap {
     align-items: flex-start;
     text-align: left;
+    margin-top: 15px;
   }
 }
 
-// Текст снизу от цифры: центр кружка = точка на линии
 .textPosBottom {
   flex-direction: column;
   align-items: flex-start;
   transform: translate(-50%, -32px);
 }
 
-// Текст сверху от цифры: центр кружка = точка на линии, блок уходит вверх
 .textPosTop {
   flex-direction: column;
   align-items: flex-start;
@@ -118,8 +116,8 @@
   height: 64px;
   border-radius: 50%;
   background:
-    radial-gradient(ellipse at 100% 100%, #00ba3d 0%, #01521d 100%),
-    radial-gradient(ellipse at 100% 100%, #00ba3d 0%, #01521d 100%), #01521d;
+    radial-gradient(ellipse at 100% 100%, #04812e 0%, #03501e 100%),
+    radial-gradient(ellipse at 100% 100%, #03772a 0%, #01521d 100%), #01521d;
   font-family: 'Geologica', sans-serif;
   font-size: 40px;
   font-weight: 400;

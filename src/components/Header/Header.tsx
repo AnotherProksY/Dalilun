@@ -184,7 +184,7 @@ export function Header() {
             </ul>
           </div>
 
-          <CtaButton className={styles.mobileCtaButton} href='#contact-form'>
+          <CtaButton className={styles.mobileCtaButton} href='#contact-form' onClick={() => setMenuOpen(false)}>
             {t('hero.cta')}
           </CtaButton>
         </nav>
