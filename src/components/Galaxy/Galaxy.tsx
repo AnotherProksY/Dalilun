@@ -1,5 +1,5 @@
 import { Renderer, Program, Mesh, Color, Triangle } from 'ogl'
-import { useEffect, useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 
 import styles from '@/components/Galaxy/Galaxy.module.scss'
 
@@ -188,9 +188,10 @@ interface GalaxyProps extends React.HTMLAttributes<HTMLDivElement> {
   rotationSpeed?: number
   autoCenterRepulsion?: number
   transparent?: boolean
+  centerProximityBoost?: number
 }
 
-export default function Galaxy({
+const Galaxy = React.forwardRef<HTMLDivElement, GalaxyProps>(function Galaxy({
   focal = [0.5, 0.5],
   rotation = [1.0, 0.0],
   starSpeed = 0.5,
@@ -207,8 +208,9 @@ export default function Galaxy({
   rotationSpeed = 0.1,
   autoCenterRepulsion = 0,
   transparent = true,
+  centerProximityBoost = 0,
   ...rest
-}: GalaxyProps) {
+}: GalaxyProps, forwardedRef) {
   const ctnDom = useRef<HTMLDivElement>(null)
   const targetMousePos = useRef({ x: 0.5, y: 0.5 })
   const smoothMousePos = useRef({ x: 0.5, y: 0.5 })
@@ -296,6 +298,15 @@ export default function Galaxy({
       program.uniforms.uMouse.value[1] = smoothMousePos.current.y
       program.uniforms.uMouseActiveFactor.value = smoothMouseActive.current
 
+      if (centerProximityBoost > 0) {
+        const dx = smoothMousePos.current.x - 0.5
+        const dy = smoothMousePos.current.y - 0.5
+        const dist = Math.sqrt(dx * dx + dy * dy)
+        const proximity = Math.max(0, 1 - dist * 2)
+        program.uniforms.uRepulsionStrength.value =
+          repulsionStrength + proximity * centerProximityBoost * smoothMouseActive.current
+      }
+
       renderer.render({ scene: mesh })
     }
     animateId = requestAnimationFrame(update)
@@ -311,6 +322,7 @@ export default function Galaxy({
 
     function handleMouseLeave() {
       targetMouseActive.current = 0.0
+      targetMousePos.current = { x: 0.5, y: 0.5 }
     }
 
     if (mouseInteraction) {
@@ -345,7 +357,14 @@ export default function Galaxy({
     repulsionStrength,
     autoCenterRepulsion,
     transparent,
+    centerProximityBoost,
   ])
 
-  return <div ref={ctnDom} className={styles.galaxyContainer} {...rest} />
-}
+  return <div ref={(node) => {
+    (ctnDom as React.MutableRefObject<HTMLDivElement | null>).current = node
+    if (typeof forwardedRef === 'function') forwardedRef(node)
+    else if (forwardedRef) forwardedRef.current = node
+  }} className={styles.galaxyContainer} {...rest} />
+})
+
+export default Galaxy
