@@ -9,12 +9,33 @@ function formatTime(sec: number) {
   return `${m}:${s.toString().padStart(2, '0')}`
 }
 
+const VIDEO_MOBILE_MQ = '(max-width: 500px)'
+const VIDEO_DESKTOP_SRC = '/Kaaba_Proletka_16_9.mp4'
+const VIDEO_MOBILE_SRC = '/Kaaba_Proletka_9_16.mp4'
+
 export function ImmersivePilgrimageBlock() {
   const { t } = useTranslation()
   const videoRef = useRef<HTMLVideoElement>(null)
+  const [isNarrow, setIsNarrow] = useState(false)
   const [isPlaying, setIsPlaying] = useState(false)
   const [currentTime, setCurrentTime] = useState(0)
   const [duration, setDuration] = useState(0)
+
+  const videoSrc = isNarrow ? VIDEO_MOBILE_SRC : VIDEO_DESKTOP_SRC
+
+  useEffect(() => {
+    setCurrentTime(0)
+    setDuration(0)
+    setIsPlaying(false)
+  }, [videoSrc])
+
+  useEffect(() => {
+    const mq = window.matchMedia(VIDEO_MOBILE_MQ)
+    const sync = () => setIsNarrow(mq.matches)
+    sync()
+    mq.addEventListener('change', sync)
+    return () => mq.removeEventListener('change', sync)
+  }, [])
 
   const syncDuration = useCallback(() => {
     const el = videoRef.current
@@ -47,7 +68,7 @@ export function ImmersivePilgrimageBlock() {
       el.removeEventListener('loadedmetadata', onLoadedMeta)
       el.removeEventListener('durationchange', onLoadedMeta)
     }
-  }, [syncDuration])
+  }, [syncDuration, videoSrc])
 
   const togglePlay = useCallback(() => {
     const el = videoRef.current
@@ -72,9 +93,10 @@ export function ImmersivePilgrimageBlock() {
       <p className={styles.text}>{t('immersivePilgrimage.text')}</p>
       <div className={styles.videoWrap} data-playing={isPlaying ? '' : undefined}>
         <video
+          key={videoSrc}
           ref={videoRef}
           className={styles.video}
-          src="/Saudi_Train_Station.mp4"
+          src={videoSrc}
           muted
           loop
           playsInline
