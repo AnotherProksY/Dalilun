@@ -37,7 +37,7 @@ export function ImmersivePilgrimageBlock() {
   }, [])
 
   return (
-    <section className={styles.section}>
+    <section id='vr' className={styles.section}>
       <h2 className={styles.title}>{t('immersivePilgrimage.title')}</h2>
       <p className={styles.text}>{t('immersivePilgrimage.text')}</p>
       <div className={styles.videoWrap}>
@@ -48,7 +48,7 @@ export function ImmersivePilgrimageBlock() {
           muted
           loop
           playsInline
-          preload="metadata"
+          preload="auto"
         />
       </div>
     </section>

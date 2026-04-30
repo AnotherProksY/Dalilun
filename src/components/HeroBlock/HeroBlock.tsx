@@ -30,7 +30,7 @@ export function HeroBlock() {
   }
 
   return (
-    <section className={styles.hero}>
+    <section id='about' className={styles.hero}>
       <Galaxy
         ref={galaxyRef}
         interactionBoostRef={galaxyInteractionBoostRef}
@@ -69,7 +69,7 @@ export function HeroBlock() {
           }}
           style={{ pointerEvents: 'auto' }}
         >
-          <CtaButton href="#contact-form">{t('hero.cta')}</CtaButton>
+          <CtaButton href='#contact-form'>{t('hero.cta')}</CtaButton>
         </div>
       </div>
     </section>

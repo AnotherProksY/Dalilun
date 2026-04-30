@@ -85,6 +85,7 @@
   color: #fff;
   opacity: 1;
   transition: opacity 0.2s;
+  user-select: none;
 
   &:hover {
     opacity: 0.9;
@@ -237,6 +238,7 @@
   color: #fff;
   padding: 0;
   transition: opacity 0.2s;
+  user-select: none;
 
   &:hover {
     opacity: 0.8;

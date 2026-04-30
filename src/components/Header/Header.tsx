@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Icon } from '@/components/UI/Icon/Icon'
 import { CtaButton } from '@/components/UI/CtaButton/CtaButton'
+import { scrollToAnchor } from '@/scrollToAnchor'
 import styles from '@/components/Header/Header.module.scss'
 
 const LANGUAGES = [
@@ -46,10 +47,10 @@ export function Header() {
   }
 
   const navLinks = [
-    { key: 'nav.about', label: t('nav.about') },
-    { key: 'nav.path', label: t('nav.path') },
-    { key: 'nav.aiMentor', label: t('nav.aiMentor') },
-    { key: 'nav.vr', label: t('nav.vr') },
+    { key: 'nav.about', label: t('nav.about'), anchorId: 'about' },
+    { key: 'nav.path', label: t('nav.path'), anchorId: 'path' },
+    { key: 'nav.aiMentor', label: t('nav.aiMentor'), anchorId: 'ai-mentor' },
+    { key: 'nav.vr', label: t('nav.vr'), anchorId: 'vr' },
   ]
 
   return (
@@ -66,7 +67,15 @@ export function Header() {
 
         <nav className={styles.nav}>
           {navLinks.map((link) => (
-            <a key={link.key} href='#' className={styles.navLink}>
+            <a
+              key={link.key}
+              href={`#${link.anchorId}`}
+              className={styles.navLink}
+              onClick={(e) => {
+                e.preventDefault()
+                scrollToAnchor(link.anchorId)
+              }}
+            >
               {link.label}
             </a>
           ))}
@@ -144,9 +153,13 @@ export function Header() {
           {navLinks.map((link) => (
             <a
               key={link.key}
-              href='#'
+              href={`#${link.anchorId}`}
               className={styles.mobileNavLink}
-              onClick={() => setMenuOpen(false)}
+              onClick={(e) => {
+                e.preventDefault()
+                setMenuOpen(false)
+                scrollToAnchor(link.anchorId)
+              }}
             >
               {link.label}
             </a>
@@ -184,7 +197,11 @@ export function Header() {
             </ul>
           </div>
 
-          <CtaButton className={styles.mobileCtaButton} href='#contact-form' onClick={() => setMenuOpen(false)}>
+          <CtaButton
+            className={styles.mobileCtaButton}
+            href='#contact-form'
+            onClick={() => setMenuOpen(false)}
+          >
             {t('hero.cta')}
           </CtaButton>
         </nav>

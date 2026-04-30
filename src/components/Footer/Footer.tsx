@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Icon } from '@/components/UI/Icon/Icon'
+import { scrollToAnchor } from '@/scrollToAnchor'
 import styles from '@/components/Footer/Footer.module.scss'
 
 export function Footer() {
@@ -15,10 +16,10 @@ export function Footer() {
   }, [])
 
   const navLinks = [
-    { key: 'nav.about', label: t('nav.about') },
-    { key: 'nav.path', label: t('nav.path') },
-    { key: 'nav.aiMentor', label: t('nav.aiMentor') },
-    { key: 'nav.vr', label: t('nav.vr') },
+    { key: 'nav.about', label: t('nav.about'), anchorId: 'about' },
+    { key: 'nav.path', label: t('nav.path'), anchorId: 'path' },
+    { key: 'nav.aiMentor', label: t('nav.aiMentor'), anchorId: 'ai-mentor' },
+    { key: 'nav.vr', label: t('nav.vr'), anchorId: 'vr' },
   ]
 
   return (
@@ -31,7 +32,15 @@ export function Footer() {
 
           <nav className={styles.nav}>
             {navLinks.map((link) => (
-              <a key={link.key} href="#" className={styles.navLink}>
+              <a
+                key={link.key}
+                href={`#${link.anchorId}`}
+                className={styles.navLink}
+                onClick={(e) => {
+                  e.preventDefault()
+                  scrollToAnchor(link.anchorId)
+                }}
+              >
                 {link.label}
               </a>
             ))}

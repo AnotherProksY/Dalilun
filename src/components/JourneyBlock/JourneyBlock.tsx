@@ -95,6 +95,7 @@ export function JourneyBlock() {
 
     const tl = gsap.timeline({
       scrollTrigger: {
+        id: 'journey-path',
         trigger: section,
         start: 'top top',
         end: 'bottom bottom',
@@ -144,7 +145,7 @@ export function JourneyBlock() {
 
   return (
     <>
-      <section ref={sectionRef} className={styles.section}>
+      <section id='path' ref={sectionRef} className={styles.section}>
         <div ref={pinRef} className={styles.pin}>
           <div className={styles.titleWrap}>
             <Container>
@@ -303,7 +304,7 @@ export function JourneyBlock() {
       </section>
 
       {/* Мобильная версия — до 1300px */}
-      <section className={styles.sectionMobile}>
+      <section className={styles.sectionMobile} data-journey-mobile>
         <Container>
           <h2 className={styles.title}>{t('journey.title')}</h2>
         </Container>
