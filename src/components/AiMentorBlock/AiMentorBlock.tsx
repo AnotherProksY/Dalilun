@@ -18,7 +18,7 @@ export function AiMentorBlock() {
   }, [])
 
   const videoSrc =
-    i18n.language === 'ru' ? '/mobile-video.mp4' : '/mobile-video-english.mp4'
+    i18n.language === 'ru' ? '/output_rus.webm' : '/output_eng.webm'
 
   const features = t('aiMentorBlock.features', {
     returnObjects: true,
