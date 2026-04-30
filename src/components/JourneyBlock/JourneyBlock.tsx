@@ -37,14 +37,14 @@ const MOBILE_STEP_TOP_PCTS: number[] = [
 const STROKE_WIDTH_START = 80
 const STROKE_WIDTH_END = 22
 
-const UN_TRANSLATE_X_PX = -545
-const UN_TRANSLATE_Y_PX = -230
+const UN_TRANSLATE_X_PX = -225
+const UN_TRANSLATE_Y_PX = -120
 
 export function JourneyBlock() {
   const { t } = useTranslation()
   const sectionRef = useRef<HTMLElement>(null)
   const pinRef = useRef<HTMLDivElement>(null)
-  const svgLogoRef = useRef<SVGSVGElement>(null)
+  const logoScaleGroupRef = useRef<SVGGElement>(null)
   const pathDIconRef = useRef<SVGPathElement>(null)
   const pathMoonRef = useRef<SVGPathElement>(null)
   const pathDLetterRef = useRef<SVGPathElement>(null)
@@ -65,12 +65,12 @@ export function JourneyBlock() {
   useEffect(() => {
     const section = sectionRef.current
     const pin = pinRef.current
-    const svgLogo = svgLogoRef.current
+    const logoScaleGroup = logoScaleGroupRef.current
     const svgLine = svgLineRef.current
     const linePath = linePathRef.current
     const labels = labelsRef.current.filter(Boolean) as HTMLDivElement[]
 
-    if (!section || !pin || !svgLogo || !svgLine || !linePath) return
+    if (!section || !pin || !logoScaleGroup || !svgLine || !linePath) return
 
     const setHeight = () => {
       section.style.height = `${window.innerHeight * 1.8}px`
@@ -88,7 +88,10 @@ export function JourneyBlock() {
       pathDotRef.current,
     ].filter(Boolean)
 
-    gsap.set(svgLogo, { transformOrigin: '85.5% 46.5%' })
+    gsap.set(logoScaleGroup, {
+      transformOrigin: '85.5% 46.5%',
+      force3D: false,
+    })
     gsap.set(svgLine, { opacity: 0 })
     gsap.set(labels, { opacity: 0 })
     gsap.set(linePath, { attr: { 'stroke-width': STROKE_WIDTH_START } })
@@ -107,13 +110,14 @@ export function JourneyBlock() {
 
     // Фаза 1 (0–40%): увеличиваем логотип и сдвигаем к центру, скрываем все буквы кроме "un"
     tl.to(
-      svgLogo,
+      logoScaleGroup,
       {
         scale: 3.4,
         x: UN_TRANSLATE_X_PX,
         y: UN_TRANSLATE_Y_PX,
         ease: 'none',
         duration: 0.4,
+        force3D: false,
       },
       0,
     )
@@ -121,7 +125,7 @@ export function JourneyBlock() {
 
     // Фаза 2 (40–70%): заливочный "un" мгновенно меняется на обводочный,
     // затем обводка плавно утончается от STROKE_WIDTH_START до STROKE_WIDTH_END
-    tl.set(svgLogo, { opacity: 0 }, 0.4)
+    tl.set(logoScaleGroup, { opacity: 0 }, 0.4)
     tl.set(svgLine, { opacity: 1 }, 0.4)
     tl.to(
       linePath,
@@ -155,7 +159,6 @@ export function JourneyBlock() {
           <div className={styles.stage}>
             {/* Логотип SVG — все буквы скрываются при скролле */}
             <svg
-              ref={svgLogoRef}
               className={styles.logoSvg}
               width='631'
               height='200'
@@ -163,7 +166,10 @@ export function JourneyBlock() {
               fill='none'
               xmlns='http://www.w3.org/2000/svg'
               aria-hidden='true'
+              shapeRendering='geometricPrecision'
+              overflow='visible'
             >
+              <g ref={logoScaleGroupRef}>
               <mask
                 id='jb-mask'
                 style={{ maskType: 'luminance' } as React.CSSProperties}
@@ -217,6 +223,7 @@ export function JourneyBlock() {
                   d='M369.427 60.8703C377.638 60.8703 384.303 54.1948 384.303 45.9635C384.303 37.7321 377.648 31.0566 369.427 31.0566C361.206 31.0566 354.551 37.7321 354.551 45.9635C354.551 54.1948 361.206 60.8703 369.427 60.8703Z'
                   fill='white'
                 />
+              </g>
               </g>
             </svg>
 

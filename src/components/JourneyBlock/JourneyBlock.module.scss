@@ -58,7 +58,9 @@
   transform: translate(-50%, -50%);
   width: 631px;
   height: 200px;
-  will-change: transform, opacity;
+  overflow: visible;
+  // Не поднимать весь svg в отдельный слой с will-change: transform — при scale слой растрируется и «плывёт»
+  will-change: opacity;
 }
 
 .lineSvg {
