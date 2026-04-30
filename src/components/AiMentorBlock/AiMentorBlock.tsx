@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState, type CSSProperties } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Icon } from '@/components/UI/Icon/Icon'
 import { Container } from '@/components/UI/Container/Container'
@@ -9,39 +9,30 @@ const FEATURE_ICON_IDS = ['ai-mentor', 'user', 'fact-check']
 const VIDEO_RU = '/output_rus.webm'
 const VIDEO_EN = '/output_eng.webm'
 
+function formatTime(sec: number) {
+  if (!Number.isFinite(sec) || sec < 0) return '0:00'
+  const m = Math.floor(sec / 60)
+  const s = Math.floor(sec % 60)
+  return `${m}:${s.toString().padStart(2, '0')}`
+}
+
 export function AiMentorBlock() {
   const { t, i18n } = useTranslation()
-  const frameRef = useRef<HTMLDivElement>(null)
   const ruRef = useRef<HTMLVideoElement>(null)
   const enRef = useRef<HTMLVideoElement>(null)
-  const inViewRef = useRef(false)
   const isRuRef = useRef(i18n.language === 'ru')
   isRuRef.current = i18n.language === 'ru'
 
   const isRu = i18n.language === 'ru'
-  const [isMobile, setIsMobile] = useState(() => window.innerWidth <= 767)
+  const [isMobile, setIsMobile] = useState(() =>
+    typeof window !== 'undefined' ? window.innerWidth <= 767 : false,
+  )
+  const [isPlaying, setIsPlaying] = useState(false)
+  const [currentTime, setCurrentTime] = useState(0)
+  const [duration, setDuration] = useState(0)
 
-  const syncPlaybackRef = useRef<() => void>(() => {})
-
-  syncPlaybackRef.current = () => {
-    const ru = ruRef.current
-    const en = enRef.current
-    if (!ru || !en) return
-    ru.playbackRate = 1.2
-    en.playbackRate = 1.2
-    if (!inViewRef.current) {
-      ru.pause()
-      en.pause()
-      return
-    }
-    if (isRuRef.current) {
-      en.pause()
-      void ru.play().catch(() => {})
-    } else {
-      ru.pause()
-      void en.play().catch(() => {})
-    }
-  }
+  const getActive = () => (isRuRef.current ? ruRef.current : enRef.current)
+  const getInactive = () => (isRuRef.current ? enRef.current : ruRef.current)
 
   useEffect(() => {
     const onResize = () => setIsMobile(window.innerWidth <= 767)
@@ -57,30 +48,119 @@ export function AiMentorBlock() {
   }>
 
   useEffect(() => {
-    const frame = frameRef.current
-    if (!frame) return
+    const ru = ruRef.current
+    const en = enRef.current
+    if (!ru || !en) return
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        inViewRef.current = entry.isIntersecting
-        syncPlaybackRef.current()
-      },
-      { threshold: 0.5 },
-    )
+    const syncDurationLocal = () => {
+      const a = getActive()
+      if (!a) return
+      const d = a.duration
+      if (Number.isFinite(d)) setDuration(d)
+    }
 
-    observer.observe(frame)
-    return () => observer.disconnect()
+    const onTimeUpdate = () => {
+      const a = getActive()
+      const i = getInactive()
+      if (!a || !i) return
+      setCurrentTime(a.currentTime)
+      if (Math.abs(i.currentTime - a.currentTime) > 0.05) {
+        i.currentTime = a.currentTime
+      }
+    }
+
+    const onPlayPause = () => {
+      const a = getActive()
+      if (!a) return
+      setIsPlaying(!a.paused)
+    }
+
+    ru.addEventListener('timeupdate', onTimeUpdate)
+    en.addEventListener('timeupdate', onTimeUpdate)
+    ru.addEventListener('play', onPlayPause)
+    ru.addEventListener('pause', onPlayPause)
+    en.addEventListener('play', onPlayPause)
+    en.addEventListener('pause', onPlayPause)
+    ru.addEventListener('loadedmetadata', syncDurationLocal)
+    en.addEventListener('loadedmetadata', syncDurationLocal)
+    ru.addEventListener('durationchange', syncDurationLocal)
+    en.addEventListener('durationchange', syncDurationLocal)
+
+    ru.playbackRate = 1.2
+    en.playbackRate = 1.2
+
+    syncDurationLocal()
+
+    return () => {
+      ru.removeEventListener('timeupdate', onTimeUpdate)
+      en.removeEventListener('timeupdate', onTimeUpdate)
+      ru.removeEventListener('play', onPlayPause)
+      ru.removeEventListener('pause', onPlayPause)
+      en.removeEventListener('play', onPlayPause)
+      en.removeEventListener('pause', onPlayPause)
+      ru.removeEventListener('loadedmetadata', syncDurationLocal)
+      en.removeEventListener('loadedmetadata', syncDurationLocal)
+      ru.removeEventListener('durationchange', syncDurationLocal)
+      en.removeEventListener('durationchange', syncDurationLocal)
+    }
   }, [])
 
   useEffect(() => {
-    syncPlaybackRef.current()
-  }, [i18n.language])
+    const ru = ruRef.current
+    const en = enRef.current
+    if (!ru || !en) return
+
+    const tShared = ru.currentTime
+    const wasPlaying = !ru.paused || !en.paused
+
+    ru.pause()
+    en.pause()
+    ru.currentTime = tShared
+    en.currentTime = tShared
+
+    const active = isRu ? ru : en
+    if (wasPlaying) {
+      void active.play().catch(() => {})
+    }
+  }, [isRu])
+
+  const togglePlay = useCallback(() => {
+    const ru = ruRef.current
+    const en = enRef.current
+    if (!ru || !en) return
+    const active = isRuRef.current ? ru : en
+    const inactive = isRuRef.current ? en : ru
+
+    inactive.currentTime = active.currentTime
+    if (active.paused) {
+      inactive.pause()
+      void active.play().catch(() => {})
+    } else {
+      ru.pause()
+      en.pause()
+    }
+  }, [])
+
+  const onSeek = useCallback(
+    (value: number) => {
+      const ru = ruRef.current
+      const en = enRef.current
+      if (!ru || !en || !Number.isFinite(duration)) return
+      ru.currentTime = value
+      en.currentTime = value
+      setCurrentTime(value)
+    },
+    [duration],
+  )
+
+  const progressPct =
+    duration > 0 ? Math.min(100, Math.max(0, (currentTime / duration) * 100)) : 0
 
   const videoProps = {
     muted: true,
     loop: true,
     playsInline: true,
-    preload: 'auto' as const,
+    preload: 'metadata' as const,
   }
 
   return (
@@ -110,7 +190,7 @@ export function AiMentorBlock() {
             </div>
           </div>
           <div className={styles.right}>
-            <div ref={frameRef} className={styles.phoneFrame}>
+            <div className={styles.phoneFrame} data-playing={isPlaying ? '' : undefined}>
               <video
                 ref={ruRef}
                 {...videoProps}
@@ -123,6 +203,49 @@ export function AiMentorBlock() {
                 src={VIDEO_EN}
                 className={`${styles.phoneVideo} ${isRu ? styles.phoneVideoInactive : ''}`}
               />
+              <div className={styles.controls}>
+                <div className={styles.controlsBackdrop} />
+                <div className={styles.controlsInner}>
+                  <button
+                    type="button"
+                    className={styles.playBtn}
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      togglePlay()
+                    }}
+                    aria-label={
+                      isPlaying ? t('immersivePilgrimage.pauseVideo') : t('immersivePilgrimage.playVideo')
+                    }
+                  >
+                    {isPlaying ? (
+                      <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden>
+                        <rect x="6" y="5" width="6" height="18" rx="1" fill="currentColor" />
+                        <rect x="16" y="5" width="6" height="18" rx="1" fill="currentColor" />
+                      </svg>
+                    ) : (
+                      <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden>
+                        <path d="M10 6l14 8-14 8V6z" fill="currentColor" />
+                      </svg>
+                    )}
+                  </button>
+                </div>
+                <div className={styles.seekRow} dir="ltr">
+                  <span className={styles.time}>{formatTime(currentTime)}</span>
+                  <input
+                    type="range"
+                    className={styles.seek}
+                    style={{ '--progress': `${progressPct}%` } as CSSProperties}
+                    min={0}
+                    max={duration || 0}
+                    step={0.1}
+                    value={Math.min(currentTime, duration || 0)}
+                    disabled={!Number.isFinite(duration) || duration <= 0}
+                    aria-valuetext={`${formatTime(currentTime)} / ${formatTime(duration)}`}
+                    onChange={(e) => onSeek(Number(e.target.value))}
+                  />
+                  <span className={styles.time}>{formatTime(duration)}</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>

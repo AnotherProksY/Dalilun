@@ -70,7 +70,7 @@ export function ImmersivePilgrimageBlock() {
     <section id='vr' className={styles.section}>
       <h2 className={styles.title}>{t('immersivePilgrimage.title')}</h2>
       <p className={styles.text}>{t('immersivePilgrimage.text')}</p>
-      <div className={styles.videoWrap}>
+      <div className={styles.videoWrap} data-playing={isPlaying ? '' : undefined}>
         <video
           ref={videoRef}
           className={styles.video}
