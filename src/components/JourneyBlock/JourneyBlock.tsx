@@ -97,6 +97,7 @@ export function JourneyBlock() {
 
     const setHeight = () => {
       section.style.height = `${window.innerHeight * 1.8}px`
+      ScrollTrigger.refresh()
     }
     setHeight()
     window.addEventListener('resize', setHeight)

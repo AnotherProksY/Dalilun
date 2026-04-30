@@ -1,6 +1,11 @@
 .section {
   position: relative;
   display: block;
+  margin-bottom: 0px;
+
+  @media (min-width: 1301px) and (max-width: 1600px) {
+    margin-bottom: 240px;
+  }
 
   @media (max-width: 1300px) {
     display: none;
@@ -12,6 +17,10 @@
   padding: 0 24px;
 
   @media (min-width: 768px) {
+    padding: 40px;
+  }
+
+  @media (min-width: 1480px) {
     padding: 0;
   }
 }
@@ -25,8 +34,12 @@
   align-items: center;
   justify-content: flex-start;
   padding-top: 10vh;
-  gap: 280px;
-  overflow: hidden;
+  gap: 260px;
+  overflow: visible;
+
+  @media (min-width: 1301px) and (max-width: 1600px) {
+    padding-top: 15vh;
+  }
 }
 
 .title {
