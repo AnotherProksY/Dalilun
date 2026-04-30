@@ -10,6 +10,10 @@ function App() {
     document.title = t('pageTitle')
   }, [t, i18n.language])
 
+  useEffect(() => {
+    document.documentElement.dir = i18n.language === 'ar' ? 'rtl' : 'ltr'
+  }, [i18n.language])
+
   return (
     <Routes>
       <Route path="*" element={<MainPage />} />

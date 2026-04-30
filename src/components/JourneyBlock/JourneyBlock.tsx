@@ -73,7 +73,7 @@ export function JourneyBlock() {
     if (!section || !pin || !svgLogo || !svgLine || !linePath) return
 
     const setHeight = () => {
-      section.style.height = `${window.innerHeight * 2 + 80}px`
+      section.style.height = `${window.innerHeight * 1.8}px`
     }
     setHeight()
     window.addEventListener('resize', setHeight)
