@@ -52,7 +52,9 @@ export function Footer() {
         </div>
 
         <div className={styles.bottom}>
-          <span className={styles.copy}>© 2026 Dalilun</span>
+          <span className={styles.copy} dir="ltr">
+            © 2026 Dalilun
+          </span>
           <div className={styles.legal}>
             <a href="#" className={styles.legalLink}>{t('footer.privacy')}</a>
             <a href="#" className={styles.legalLink}>{t('footer.cookies')}</a>

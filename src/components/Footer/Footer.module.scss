@@ -81,12 +81,25 @@
   span {
     text-wrap: nowrap;
   }
+
+  // При rtl страницы грид зеркалируется: без ltr здесь копирайт уезжает вправо.
+  html[dir='rtl'] & {
+    direction: ltr;
+  }
+}
+
+.copy {
+  unicode-bidi: isolate;
 }
 
 .legal {
   display: flex;
   gap: 60px;
   margin-left: 80px;
+
+  html[dir='rtl'] & {
+    direction: rtl;
+  }
 }
 
 .legalLink {
