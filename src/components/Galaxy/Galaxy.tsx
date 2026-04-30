@@ -1,5 +1,5 @@
 import { Renderer, Program, Mesh, Color, Triangle } from 'ogl'
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, type MutableRefObject } from 'react'
 
 import styles from '@/components/Galaxy/Galaxy.module.scss'
 
@@ -36,6 +36,11 @@ uniform float uRepulsionStrength;
 uniform float uMouseActiveFactor;
 uniform float uAutoCenterRepulsion;
 uniform bool uTransparent;
+uniform float uAttractionAmount;
+uniform float uAttractWide;
+uniform float uAttractCluster;
+uniform float uAttractClusterSoft;
+uniform float uAttractClusterPow;
 
 varying vec2 vUv;
 
@@ -137,9 +142,18 @@ void main() {
     uv += repulsion * 0.05;
   } else if (uMouseRepulsion) {
     vec2 mousePosUV = (uMouse * uResolution.xy - focalPx) / uResolution.y;
-    float mouseDist = length(uv - mousePosUV);
-    vec2 repulsion = normalize(uv - mousePosUV) * (uRepulsionStrength / (mouseDist + 0.1));
-    uv += repulsion * 0.05 * uMouseActiveFactor;
+    vec2 fromMouse = uv - mousePosUV;
+    float mouseDist = length(fromMouse);
+    vec2 repulse = normalize(fromMouse + vec2(1e-5)) * (uRepulsionStrength / (mouseDist + 0.1));
+    vec2 toMouse = mousePosUV - uv;
+    float d = length(toMouse) + uAttractClusterSoft;
+    vec2 nd = normalize(toMouse + vec2(1e-5));
+    vec2 convergeWide = toMouse * uAttractWide;
+    vec2 convergeTight = nd * (uAttractCluster / pow(d, uAttractClusterPow));
+    vec2 converge = convergeWide + convergeTight;
+    float att = clamp(uAttractionAmount, 0.0, 1.0);
+    vec2 grav = mix(repulse * 0.05, converge, att);
+    uv += grav * uMouseActiveFactor;
   } else {
     vec2 mouseOffset = mouseNorm * 0.1 * uMouseActiveFactor;
     uv += mouseOffset;
@@ -189,6 +203,18 @@ interface GalaxyProps extends React.HTMLAttributes<HTMLDivElement> {
   autoCenterRepulsion?: number
   transparent?: boolean
   centerProximityBoost?: number
+  /** Целевой множитель силы мыши; к фактическому значению применяется сглаживание. */
+  interactionBoostRef?: MutableRefObject<number>
+  /** Цель стягивания поля звёзд к точке курсора (0–1); сглаживается. */
+  interactionAttractionRef?: MutableRefObject<number>
+  /** Линейный сход (широкий радиус влияния). */
+  mouseScreenAttractStrength?: number
+  /** Доп. тяга к точке курсора ~1/d^pow — плотное ядро. */
+  mouseAttractClusterStrength?: number
+  /** Смещает знаменатель у ядра, без вспышки в нуле. */
+  mouseAttractClusterSoft?: number
+  /** Показатель степени для ядра (>1 — острее к центру). */
+  mouseAttractClusterPow?: number
 }
 
 const Galaxy = React.forwardRef<HTMLDivElement, GalaxyProps>(function Galaxy({
@@ -209,6 +235,12 @@ const Galaxy = React.forwardRef<HTMLDivElement, GalaxyProps>(function Galaxy({
   autoCenterRepulsion = 0,
   transparent = true,
   centerProximityBoost = 0,
+  interactionBoostRef,
+  interactionAttractionRef,
+  mouseScreenAttractStrength = 0.36,
+  mouseAttractClusterStrength = 0.08,
+  mouseAttractClusterSoft = 0.1,
+  mouseAttractClusterPow = 1.3,
   ...rest
 }: GalaxyProps, forwardedRef) {
   const ctnDom = useRef<HTMLDivElement>(null)
@@ -216,6 +248,8 @@ const Galaxy = React.forwardRef<HTMLDivElement, GalaxyProps>(function Galaxy({
   const smoothMousePos = useRef({ x: 0.5, y: 0.5 })
   const targetMouseActive = useRef(0.0)
   const smoothMouseActive = useRef(0.0)
+  const smoothInteractionBoost = useRef(1)
+  const smoothInteractionAttraction = useRef(0)
 
   useEffect(() => {
     if (!ctnDom.current) return
@@ -273,6 +307,11 @@ const Galaxy = React.forwardRef<HTMLDivElement, GalaxyProps>(function Galaxy({
         uMouseActiveFactor: { value: 0.0 },
         uAutoCenterRepulsion: { value: autoCenterRepulsion },
         uTransparent: { value: transparent },
+        uAttractionAmount: { value: 0 },
+        uAttractWide: { value: mouseScreenAttractStrength },
+        uAttractCluster: { value: mouseAttractClusterStrength },
+        uAttractClusterSoft: { value: mouseAttractClusterSoft },
+        uAttractClusterPow: { value: mouseAttractClusterPow },
       },
     })
 
@@ -296,7 +335,23 @@ const Galaxy = React.forwardRef<HTMLDivElement, GalaxyProps>(function Galaxy({
 
       program.uniforms.uMouse.value[0] = smoothMousePos.current.x
       program.uniforms.uMouse.value[1] = smoothMousePos.current.y
-      program.uniforms.uMouseActiveFactor.value = smoothMouseActive.current
+      const targetBoost = interactionBoostRef?.current ?? 1
+      const boostLerp = 0.085
+      smoothInteractionBoost.current +=
+        (targetBoost - smoothInteractionBoost.current) * boostLerp
+      if (Math.abs(smoothInteractionBoost.current - targetBoost) < 0.004) {
+        smoothInteractionBoost.current = targetBoost
+      }
+      program.uniforms.uMouseActiveFactor.value =
+        smoothMouseActive.current * smoothInteractionBoost.current
+
+      const targetAttraction = interactionAttractionRef?.current ?? 0
+      smoothInteractionAttraction.current +=
+        (targetAttraction - smoothInteractionAttraction.current) * boostLerp
+      if (Math.abs(smoothInteractionAttraction.current - targetAttraction) < 0.004) {
+        smoothInteractionAttraction.current = targetAttraction
+      }
+      program.uniforms.uAttractionAmount.value = smoothInteractionAttraction.current
 
       if (centerProximityBoost > 0) {
         const dx = smoothMousePos.current.x - 0.5
@@ -358,6 +413,10 @@ const Galaxy = React.forwardRef<HTMLDivElement, GalaxyProps>(function Galaxy({
     autoCenterRepulsion,
     transparent,
     centerProximityBoost,
+    mouseScreenAttractStrength,
+    mouseAttractClusterStrength,
+    mouseAttractClusterSoft,
+    mouseAttractClusterPow,
   ])
 
   return <div ref={(node) => {
