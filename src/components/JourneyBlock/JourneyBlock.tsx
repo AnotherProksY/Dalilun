@@ -15,7 +15,18 @@ const DOT_POSITIONS: [number, number][] = [
   [92, 62],
 ]
 
+/** RTL: путь читается справа налево — те же шаги 1→5 привязаны к узлам как на макете ar */
+const DOT_POSITIONS_AR: [number, number][] = [
+  [152, 103],
+  [152, 44],
+  [62, 7],
+  [11, 93],
+  [-45, 38],
+]
+
 const LABEL_TEXT_WIDTHS: number[] = [279, 313, 284, 354, 330]
+
+const LABEL_TEXT_WIDTHS_AR: number[] = [250, 250, 244, 240, 210]
 
 // Позиция текста относительно цифры. DOT_POSITIONS — координаты центра кружка.
 const LABEL_TEXT_POSITION: ('left' | 'right' | 'top' | 'bottom')[] = [
@@ -23,6 +34,14 @@ const LABEL_TEXT_POSITION: ('left' | 'right' | 'top' | 'bottom')[] = [
   'left',
   'bottom',
   'top',
+  'right',
+]
+
+const LABEL_TEXT_POSITION_AR: ('left' | 'right' | 'top' | 'bottom')[] = [
+  'left',
+  'left',
+  'top',
+  'bottom',
   'right',
 ]
 
@@ -41,7 +60,11 @@ const UN_TRANSLATE_X_PX = -225
 const UN_TRANSLATE_Y_PX = -120
 
 export function JourneyBlock() {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
+  const isAr = i18n.language.startsWith('ar')
+  const dotPositions = isAr ? DOT_POSITIONS_AR : DOT_POSITIONS
+  const labelTextPosition = isAr ? LABEL_TEXT_POSITION_AR : LABEL_TEXT_POSITION
+  const labelTextWidths = isAr ? LABEL_TEXT_WIDTHS_AR : LABEL_TEXT_WIDTHS
   const sectionRef = useRef<HTMLElement>(null)
   const pinRef = useRef<HTMLDivElement>(null)
   const logoScaleGroupRef = useRef<SVGGElement>(null)
@@ -247,20 +270,20 @@ export function JourneyBlock() {
             </svg>
 
             {/* Подписи шагов — появляются в фазе 3 */}
-            {DOT_POSITIONS.map(([left, top], i) => (
+            {dotPositions.map(([left, top], i) => (
               <div
                 key={i}
                 ref={(el) => {
                   labelsRef.current[i] = el
                 }}
-                className={`${styles.label} ${styles[`textPos${LABEL_TEXT_POSITION[i].charAt(0).toUpperCase() + LABEL_TEXT_POSITION[i].slice(1)}`]}`}
+                className={`${styles.label} ${styles[`textPos${labelTextPosition[i].charAt(0).toUpperCase() + labelTextPosition[i].slice(1)}`]}${isAr ? ` ${styles.labelAr}` : ''}`}
                 style={{ left: `${left}%`, top: `${top}%` }}
               >
-                {LABEL_TEXT_POSITION[i] === 'top' && (
+                {labelTextPosition[i] === 'top' && (
                   <>
                     <div
                       className={styles.stepTextWrap}
-                      style={{ width: LABEL_TEXT_WIDTHS[i] }}
+                      style={{ width: labelTextWidths[i] }}
                     >
                       <p className={styles.stepTitle}>{steps[i].title}</p>
                       <p className={styles.stepText}>{steps[i].text}</p>
@@ -268,23 +291,23 @@ export function JourneyBlock() {
                     <span className={styles.stepNum}>{i + 1}</span>
                   </>
                 )}
-                {LABEL_TEXT_POSITION[i] === 'bottom' && (
+                {labelTextPosition[i] === 'bottom' && (
                   <>
                     <span className={styles.stepNum}>{i + 1}</span>
                     <div
                       className={styles.stepTextWrap}
-                      style={{ width: LABEL_TEXT_WIDTHS[i] }}
+                      style={{ width: labelTextWidths[i] }}
                     >
                       <p className={styles.stepTitle}>{steps[i].title}</p>
                       <p className={styles.stepText}>{steps[i].text}</p>
                     </div>
                   </>
                 )}
-                {LABEL_TEXT_POSITION[i] === 'left' && (
+                {labelTextPosition[i] === 'left' && (
                   <>
                     <div
                       className={styles.stepTextWrap}
-                      style={{ width: LABEL_TEXT_WIDTHS[i] }}
+                      style={{ width: labelTextWidths[i] }}
                     >
                       <p className={styles.stepTitle}>{steps[i].title}</p>
                       <p className={styles.stepText}>{steps[i].text}</p>
@@ -292,12 +315,12 @@ export function JourneyBlock() {
                     <span className={styles.stepNum}>{i + 1}</span>
                   </>
                 )}
-                {LABEL_TEXT_POSITION[i] === 'right' && (
+                {labelTextPosition[i] === 'right' && (
                   <>
                     <span className={styles.stepNum}>{i + 1}</span>
                     <div
                       className={styles.stepTextWrap}
-                      style={{ width: LABEL_TEXT_WIDTHS[i] }}
+                      style={{ width: labelTextWidths[i] }}
                     >
                       <p className={styles.stepTitle}>{steps[i].title}</p>
                       <p className={styles.stepText}>{steps[i].text}</p>

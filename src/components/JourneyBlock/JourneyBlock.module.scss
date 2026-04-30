@@ -120,6 +120,29 @@
   transform: translate(-50%, calc(-100% + 32px));
 }
 
+// После textPos*: иначе .textPosRight перебивает выравнивание тем же весом селектора
+.labelAr {
+  .stepTextWrap {
+    direction: rtl;
+    align-items: flex-end;
+    text-align: right;
+  }
+
+  .stepTitle,
+  .stepText {
+    text-align: right;
+    width: 100%;
+  }
+
+  &.textPosTop,
+  &.textPosBottom {
+    // При dir=rtl на <html> flex-end на поперечной оси — это «логический конец» слева;
+    // ltr на контейнере: кружок и блок текста выравниваем по физическому правому краю.
+    direction: ltr;
+    align-items: flex-end;
+  }
+}
+
 .stepNum {
   display: inline-flex;
   align-items: center;
