@@ -80,6 +80,8 @@ const en = {
   immersivePilgrimage: {
     title: 'Immersive Hajj and Umrah',
     text: 'IExperience Umrah and Hajj through 3D and VR, exploring each ritual as if you were there',
+    playVideo: 'Play video',
+    pauseVideo: 'Pause',
   },
   contactForm: {
     title: 'Join Dalilun',
