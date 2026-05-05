@@ -192,6 +192,10 @@
   right: 12px;
   z-index: 2;
   pointer-events: none;
+
+  @media (max-width: 973px) {
+    bottom: 38px;
+  }
 }
 
 .playBtn {
@@ -243,6 +247,9 @@
     gap: 6px;
     padding: 8px 10px;
     border-radius: 10px;
+    display: grid;
+    grid-template-columns: auto auto 85px auto;
+    align-items: center;
   }
 }
 
@@ -315,5 +322,39 @@
     height: 6px;
     border-radius: 3px;
     background: #fff;
+  }
+
+  @media (max-width: 973px) {
+    flex: none;
+    width: 100%;
+    min-width: 0;
+    height: 4px;
+    border-radius: 2px;
+
+    &::-webkit-slider-thumb {
+      width: 10px;
+      height: 10px;
+      margin-top: -3px;
+    }
+
+    &::-webkit-slider-runnable-track {
+      height: 4px;
+      border-radius: 2px;
+    }
+
+    &::-moz-range-thumb {
+      width: 10px;
+      height: 10px;
+    }
+
+    &::-moz-range-track {
+      height: 4px;
+      border-radius: 2px;
+    }
+
+    &::-moz-range-progress {
+      height: 4px;
+      border-radius: 2px;
+    }
   }
 }

@@ -52,6 +52,16 @@
   }
 }
 
+.scrollBtnWrap {
+  width: 162px;
+  display: flex;
+  justify-content: flex-end;
+
+  @media (max-width: 1024px) {
+    width: auto;
+  }
+}
+
 .scrollBtn {
   width: 40px;
   height: 40px;
@@ -111,9 +121,9 @@
     order: 1;
   }
 
-  .scrollBtn {
+  .scrollBtnWrap {
     order: 2;
-    margin-left: auto;
+    flex: 0;
   }
 
   .nav {

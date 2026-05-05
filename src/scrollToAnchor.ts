@@ -5,6 +5,8 @@ gsap.registerPlugin(ScrollTrigger)
 
 const JOURNEY_SCROLL_TRIGGER_ID = 'journey-path'
 const DESKTOP_JOURNEY_MQ = '(min-width: 1301px)'
+const VR_VIDEO_OVERLAY_MQ = '(min-width: 1000px)'
+const VR_SCROLL_OFFSET_TOP_PX = 100
 
 function scrollToPath() {
   const desktop = window.matchMedia(DESKTOP_JOURNEY_MQ).matches
@@ -43,6 +45,20 @@ export function scrollToAnchor(elementId: string) {
   if (id === 'path') {
     scrollToPath()
     return
+  }
+
+  if (id === 'vr' && window.matchMedia(VR_VIDEO_OVERLAY_MQ).matches) {
+    const section = document.getElementById('vr')
+    const videoEl = section?.querySelector<HTMLElement>('[data-vr-video-align]')
+    if (section && videoEl) {
+      const top =
+        videoEl.getBoundingClientRect().top +
+        window.scrollY -
+        VR_SCROLL_OFFSET_TOP_PX
+      window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' })
+      window.history.replaceState(null, '', '#vr')
+      return
+    }
   }
 
   const el = document.getElementById(id)

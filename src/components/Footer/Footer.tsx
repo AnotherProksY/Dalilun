@@ -18,9 +18,11 @@ export function Footer() {
     <footer className={styles.footer}>
       <div className={styles.inner}>
         <div className={styles.top}>
-          <span className={styles.copy} dir="ltr">
-            © 2026 Dalilun
-          </span>
+          <div className={styles.copyWrap}>
+            <span className={styles.copy} dir="ltr">
+              © 2026 Dalilun
+            </span>
+          </div>
 
           <nav className={styles.nav}>
             {navLinks.map((link) => (
@@ -38,9 +40,11 @@ export function Footer() {
             ))}
           </nav>
 
-          <button type="button" className={styles.scrollBtn} onClick={scrollTop} aria-label={t('footer.scrollUp')}>
-            <Icon id="arrow-top" width={14} height={16} />
-          </button>
+          <div className={styles.scrollBtnWrap}>
+            <button type="button" className={styles.scrollBtn} onClick={scrollTop} aria-label={t('footer.scrollUp')}>
+              <Icon id="arrow-top" width={14} height={16} />
+            </button>
+          </div>
         </div>
 
         <div className={styles.bottom}>

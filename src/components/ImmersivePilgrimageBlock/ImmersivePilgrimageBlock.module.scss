@@ -53,19 +53,26 @@
     position: absolute;
     bottom: 0;
     left: 0;
-    width: 60%;
+    width: 100%;
+    max-width: 800px;
     padding: 40px 28px 40px;
     pointer-events: none;
 
     &::before {
       content: '';
       position: absolute;
-      inset: -60px -60px -60px -60px;
-      background:
-        linear-gradient(to right, rgb(0 0 0 / 80%) 0%, rgb(0 0 0 / 0%) 70%),
-        linear-gradient(to top, rgb(0 0 0 / 80%) 0%, rgb(0 0 0 / 0%) 70%);
+      inset: -50px -50px -50px -50px;
+      background: radial-gradient(
+        ellipse 185% 165% at 0% 100%,
+        rgb(0 0 0 / 100%) 0%,
+        rgb(0 0 0 / 100%) 18%,
+        rgb(0 0 0 / 92%) 30%,
+        rgb(0 0 0 / 72%) 46%,
+        rgb(0 0 0 / 38%) 62%,
+        rgb(0 0 0 / 0%) 80%
+      );
       pointer-events: none;
-      filter: blur(50px);
+      filter: blur(40px);
     }
 
     :global([dir='rtl']) & {
@@ -73,9 +80,16 @@
       right: 0;
 
       &::before {
-        background:
-          linear-gradient(to left, rgb(0 0 0 / 80%) 0%, rgb(0 0 0 / 0%) 70%),
-          linear-gradient(to top, rgb(0 0 0 / 80%) 0%, rgb(0 0 0 / 0%) 70%);
+        background: radial-gradient(
+          ellipse 185% 165% at 100% 100%,
+          rgb(0 0 0 / 100%) 0%,
+          rgb(0 0 0 / 100%) 18%,
+          rgb(0 0 0 / 92%) 30%,
+          rgb(0 0 0 / 72%) 46%,
+          rgb(0 0 0 / 38%) 62%,
+          rgb(0 0 0 / 0%) 80%
+        );
+        filter: blur(40px);
       }
     }
   }

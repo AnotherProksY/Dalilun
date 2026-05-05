@@ -45,9 +45,9 @@ export function ImmersivePilgrimageBlock() {
   )
 
   return (
-    <section id='vr' className={styles.section}>
+    <section id="vr" className={styles.section}>
       {!isOverlay && textBlock}
-      <div className={styles.videoWrap}>
+      <div className={styles.videoWrap} data-vr-video-align>
         <video
           key={videoSrc}
           ref={videoRef}

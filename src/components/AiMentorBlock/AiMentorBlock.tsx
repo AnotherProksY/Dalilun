@@ -21,6 +21,7 @@ export function AiMentorBlock() {
   const ruRef = useRef<HTMLVideoElement>(null)
   const enRef = useRef<HTMLVideoElement>(null)
   const sectionRef = useRef<HTMLElement>(null)
+  const phoneFrameRef = useRef<HTMLDivElement>(null)
   const isRuRef = useRef(i18n.language === 'ru')
   isRuRef.current = i18n.language === 'ru'
 
@@ -142,6 +143,15 @@ export function AiMentorBlock() {
     }
   }, [])
 
+  const onPhoneFramePointerLeave = useCallback(() => {
+    const root = phoneFrameRef.current
+    if (!root) return
+    const active = document.activeElement
+    if (active instanceof HTMLElement && root.contains(active)) {
+      active.blur()
+    }
+  }, [])
+
   const onSeek = useCallback(
     (value: number) => {
       const ru = ruRef.current
@@ -212,7 +222,12 @@ export function AiMentorBlock() {
             </div>
           </div>
           <div className={styles.right}>
-            <div className={styles.phoneFrame} data-playing={isPlaying ? '' : undefined}>
+            <div
+              ref={phoneFrameRef}
+              className={styles.phoneFrame}
+              data-playing={isPlaying ? '' : undefined}
+              onPointerLeave={onPhoneFramePointerLeave}
+            >
               <video
                 ref={ruRef}
                 {...videoProps}
