@@ -20,6 +20,7 @@ export function AiMentorBlock() {
   const { t, i18n } = useTranslation()
   const ruRef = useRef<HTMLVideoElement>(null)
   const enRef = useRef<HTMLVideoElement>(null)
+  const sectionRef = useRef<HTMLElement>(null)
   const isRuRef = useRef(i18n.language === 'ru')
   isRuRef.current = i18n.language === 'ru'
 
@@ -153,6 +154,27 @@ export function AiMentorBlock() {
     [duration],
   )
 
+  useEffect(() => {
+    const section = sectionRef.current
+    if (!section) return
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          const active = isRuRef.current ? ruRef.current : enRef.current
+          const inactive = isRuRef.current ? enRef.current : ruRef.current
+          if (!active || !inactive) return
+          inactive.pause()
+          void active.play().catch(() => {})
+        }
+      },
+      { threshold: 0.5 },
+    )
+
+    observer.observe(section)
+    return () => observer.disconnect()
+  }, [])
+
   const progressPct =
     duration > 0 ? Math.min(100, Math.max(0, (currentTime / duration) * 100)) : 0
 
@@ -164,7 +186,7 @@ export function AiMentorBlock() {
   }
 
   return (
-    <section id='ai-mentor' className={styles.section}>
+    <section ref={sectionRef} id='ai-mentor' className={styles.section}>
       <Container>
         <div className={styles.inner}>
           <div className={styles.left}>

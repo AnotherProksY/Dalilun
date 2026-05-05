@@ -18,7 +18,7 @@ export function WeHelpBlock() {
   }>
 
   return (
-    <section className={`${styles.section} mb-section`}>
+    <section id="about" className={`${styles.section} mb-section`}>
       <GlobalSpotlight
         gridRef={gridRef}
         disableAnimations={isMobile}

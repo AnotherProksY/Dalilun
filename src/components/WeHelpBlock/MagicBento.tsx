@@ -263,9 +263,9 @@ export const GlobalSpotlight: React.FC<GlobalSpotlightProps> = ({
       border-radius: 50%;
       pointer-events: none;
       background: radial-gradient(circle,
-        rgba(${glowColor}, 0.06) 0%,
-        rgba(${glowColor}, 0.03) 20%,
-        transparent 60%
+        rgba(${glowColor}, 0.03) 0%,
+        rgba(${glowColor}, 0.015) 30%,
+        transparent 70%
       );
       z-index: 200;
       opacity: 0;
@@ -320,9 +320,9 @@ export const GlobalSpotlight: React.FC<GlobalSpotlightProps> = ({
 
       const targetOpacity =
         minDistance <= proximity
-          ? 0.4
+          ? 0.2
           : minDistance <= fadeDistance
-            ? ((fadeDistance - minDistance) / (fadeDistance - proximity)) * 0.4
+            ? ((fadeDistance - minDistance) / (fadeDistance - proximity)) * 0.2
             : 0
 
       gsap.to(spotlightRef.current, {

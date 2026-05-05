@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Icon } from '@/components/UI/Icon/Icon'
 import { scrollToAnchor } from '@/scrollToAnchor'
@@ -6,14 +5,7 @@ import styles from '@/components/Footer/Footer.module.scss'
 
 export function Footer() {
   const { t } = useTranslation()
-  const [isMobile, setIsMobile] = useState(() => window.innerWidth <= 768)
   const scrollTop = () => window.scrollTo({ top: 0, behavior: 'smooth' })
-
-  useEffect(() => {
-    const onResize = () => setIsMobile(window.innerWidth <= 768)
-    window.addEventListener('resize', onResize, { passive: true })
-    return () => window.removeEventListener('resize', onResize)
-  }, [])
 
   const navLinks = [
     { key: 'nav.about', label: t('nav.about'), anchorId: 'about' },
@@ -26,9 +18,9 @@ export function Footer() {
     <footer className={styles.footer}>
       <div className={styles.inner}>
         <div className={styles.top}>
-          <a href="/" className={styles.logo} aria-label="Dalilun">
-            <Icon id="logo" width={isMobile ? 101 : 114} height={isMobile ? 32 : 36} viewBox="0 0 114 36" />
-          </a>
+          <span className={styles.copy} dir="ltr">
+            © 2026 Dalilun
+          </span>
 
           <nav className={styles.nav}>
             {navLinks.map((link) => (
@@ -52,13 +44,8 @@ export function Footer() {
         </div>
 
         <div className={styles.bottom}>
-          <span className={styles.copy} dir="ltr">
-            © 2026 Dalilun
-          </span>
-          <div className={styles.legal}>
-            <a href="#" className={styles.legalLink}>{t('footer.privacy')}</a>
-            <a href="#" className={styles.legalLink}>{t('footer.cookies')}</a>
-          </div>
+          <a href="#" className={styles.legalLink}>{t('footer.privacy')}</a>
+          <a href="#" className={styles.legalLink}>{t('footer.cookies')}</a>
         </div>
       </div>
     </footer>

@@ -30,7 +30,7 @@ export function HeroBlock() {
   }
 
   return (
-    <section id='about' className={styles.hero}>
+    <section className={styles.hero}>
       <Galaxy
         ref={galaxyRef}
         interactionBoostRef={galaxyInteractionBoostRef}
