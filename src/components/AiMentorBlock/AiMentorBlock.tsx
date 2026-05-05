@@ -226,8 +226,7 @@ export function AiMentorBlock() {
                 className={`${styles.phoneVideo} ${isRu ? styles.phoneVideoInactive : ''}`}
               />
               <div className={styles.controls}>
-                <div className={styles.controlsBackdrop} />
-                <div className={styles.controlsInner}>
+                <div className={styles.seekRow} dir="ltr">
                   <button
                     type="button"
                     className={styles.playBtn}
@@ -240,18 +239,16 @@ export function AiMentorBlock() {
                     }
                   >
                     {isPlaying ? (
-                      <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden>
+                      <svg width="20" height="20" viewBox="0 0 28 28" fill="none" aria-hidden>
                         <rect x="6" y="5" width="6" height="18" rx="1" fill="currentColor" />
                         <rect x="16" y="5" width="6" height="18" rx="1" fill="currentColor" />
                       </svg>
                     ) : (
-                      <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden>
+                      <svg width="20" height="20" viewBox="0 0 28 28" fill="none" aria-hidden>
                         <path d="M10 6l14 8-14 8V6z" fill="currentColor" />
                       </svg>
                     )}
                   </button>
-                </div>
-                <div className={styles.seekRow} dir="ltr">
                   <span className={styles.time}>{formatTime(currentTime)}</span>
                   <input
                     type="range"
