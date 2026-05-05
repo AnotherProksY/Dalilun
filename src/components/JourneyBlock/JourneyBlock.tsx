@@ -8,8 +8,8 @@ import { Container } from '@/components/UI/Container/Container'
 gsap.registerPlugin(ScrollTrigger)
 
 const DOT_POSITIONS: [number, number][] = [
-  [7, 18],
-  [8, 77],
+  [9, 18],
+  [9, 77],
   [46, 93],
   [100, 7],
   [92, 62],
@@ -21,7 +21,7 @@ const DOT_POSITIONS_AR: [number, number][] = [
   [152, 44],
   [62, 7],
   [11, 93],
-  [-45, 38],
+  [-43, 38],
 ]
 
 const LABEL_TEXT_WIDTHS: number[] = [279, 313, 284, 354, 330]
@@ -53,8 +53,8 @@ const MOBILE_STEP_TOP_PCTS: number[] = [
   (726 / 675) * 100,
 ]
 
-const STROKE_WIDTH_START = 80
-const STROKE_WIDTH_END = 22
+const UN_STROKE_START = 23
+const UN_STROKE_END = 6
 
 const UN_TRANSLATE_X_PX = -245
 const UN_TRANSLATE_Y_PX = -120
@@ -76,8 +76,6 @@ export function JourneyBlock() {
   const pathL2Ref = useRef<SVGPathElement>(null)
   const pathIRef = useRef<SVGPathElement>(null)
   const pathDotRef = useRef<SVGPathElement>(null)
-  const svgLineRef = useRef<SVGSVGElement>(null)
-  const linePathRef = useRef<SVGPathElement>(null)
   const labelsRef = useRef<(HTMLDivElement | null)[]>([])
 
   const steps = t('journey.steps', { returnObjects: true }) as Array<{
@@ -89,11 +87,10 @@ export function JourneyBlock() {
     const section = sectionRef.current
     const pin = pinRef.current
     const logoScaleGroup = logoScaleGroupRef.current
-    const svgLine = svgLineRef.current
-    const linePath = linePathRef.current
+    const pathUnLogo = pathUnLogoRef.current
     const labels = labelsRef.current.filter(Boolean) as HTMLDivElement[]
 
-    if (!section || !pin || !logoScaleGroup || !svgLine || !linePath) return
+    if (!section || !pin || !logoScaleGroup || !pathUnLogo) return
 
     const setHeight = () => {
       section.style.height = `${window.innerHeight * 1.8}px`
@@ -116,9 +113,8 @@ export function JourneyBlock() {
       transformOrigin: '85.5% 46.5%',
       force3D: false,
     })
-    gsap.set(svgLine, { opacity: 0 })
     gsap.set(labels, { opacity: 0 })
-    gsap.set(linePath, { attr: { 'stroke-width': STROKE_WIDTH_START } })
+    gsap.set(pathUnLogo, { attr: { 'stroke-width': UN_STROKE_START } })
 
     const tl = gsap.timeline({
       scrollTrigger: {
@@ -147,18 +143,15 @@ export function JourneyBlock() {
     )
     tl.to(fadeOutPaths, { opacity: 0, ease: 'none', duration: 0.35 }, 0)
 
-    // Фаза 2 (40–70%): заливочный "un" мгновенно меняется на обводочный,
-    // затем обводка плавно утончается от STROKE_WIDTH_START до STROKE_WIDTH_END
-    tl.set(logoScaleGroup, { opacity: 0 }, 0.4)
-    tl.set(svgLine, { opacity: 1 }, 0.4)
+    // Фаза 2 (40–70%): обводка pathUnLogoRef плавно утончается
     tl.to(
-      linePath,
+      pathUnLogo,
       {
-        attr: { 'stroke-width': STROKE_WIDTH_END },
+        attr: { 'stroke-width': UN_STROKE_END },
         ease: 'none',
         duration: 0.28,
       },
-      0.48,
+      0.4,
     )
 
     // Фаза 3 (72%): все подписи шагов появляются
@@ -250,25 +243,6 @@ export function JourneyBlock() {
                   />
                 </g>
               </g>
-            </svg>
-
-            {/* Линия SVG — обводка анимируется от толстой к тонкой */}
-            <svg
-              ref={svgLineRef}
-              className={styles.lineSvg}
-              width='569'
-              height='380'
-              viewBox='0 0 569 380'
-              fill='none'
-              xmlns='http://www.w3.org/2000/svg'
-              aria-hidden='true'
-            >
-              <path
-                ref={linePathRef}
-                d='M11 0V223C11 408 281.034 405 281.034 223V185.5M281.034 185.5V0.000344247M281.034 185.5C325 -34.5 558 -5.5 558 158.026V380'
-                stroke='white'
-                strokeWidth={STROKE_WIDTH_START}
-              />
             </svg>
 
             {/* Подписи шагов — появляются в фазе 3 */}
