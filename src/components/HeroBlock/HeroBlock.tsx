@@ -69,7 +69,7 @@ export function HeroBlock() {
           }}
           style={{ pointerEvents: 'auto' }}
         >
-          <CtaButton href='#contact-form'>{t('hero.cta')}</CtaButton>
+          <CtaButton href='#contact-form' className={styles.cta}>{t('hero.cta')}</CtaButton>
         </div>
       </div>
     </section>

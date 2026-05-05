@@ -67,6 +67,17 @@
       pointer-events: none;
       filter: blur(50px);
     }
+
+    :global([dir='rtl']) & {
+      left: auto;
+      right: 0;
+
+      &::before {
+        background:
+          linear-gradient(to left, rgb(0 0 0 / 80%) 0%, rgb(0 0 0 / 0%) 70%),
+          linear-gradient(to top, rgb(0 0 0 / 80%) 0%, rgb(0 0 0 / 0%) 70%);
+      }
+    }
   }
 }
 
