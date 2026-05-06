@@ -1,4 +1,10 @@
-import { useCallback, useEffect, useRef, useState, type CSSProperties } from 'react'
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+} from 'react'
 import { useTranslation } from 'react-i18next'
 import { Icon } from '@/components/UI/Icon/Icon'
 import { Container } from '@/components/UI/Container/Container'
@@ -33,6 +39,9 @@ export function AiMentorBlock() {
   const [currentTime, setCurrentTime] = useState(0)
   const [duration, setDuration] = useState(0)
 
+  /** Не триггерить React на каждом timeupdate — разгружает главный поток под видео. */
+  const lastUiTimeRef = useRef(0)
+
   const getActive = () => (isRuRef.current ? ruRef.current : enRef.current)
   const getInactive = () => (isRuRef.current ? enRef.current : ruRef.current)
 
@@ -65,7 +74,11 @@ export function AiMentorBlock() {
       const a = getActive()
       const i = getInactive()
       if (!a || !i) return
-      setCurrentTime(a.currentTime)
+      const now = performance.now()
+      if (now - lastUiTimeRef.current >= 100) {
+        lastUiTimeRef.current = now
+        setCurrentTime(a.currentTime)
+      }
       if (Math.abs(i.currentTime - a.currentTime) > 0.05) {
         i.currentTime = a.currentTime
       }
@@ -121,6 +134,7 @@ export function AiMentorBlock() {
     en.currentTime = tShared
 
     const active = isRu ? ru : en
+    setCurrentTime(active.currentTime)
     if (wasPlaying) {
       void active.play().catch(() => {})
     }
@@ -186,14 +200,15 @@ export function AiMentorBlock() {
   }, [])
 
   const progressPct =
-    duration > 0 ? Math.min(100, Math.max(0, (currentTime / duration) * 100)) : 0
+    duration > 0
+      ? Math.min(100, Math.max(0, (currentTime / duration) * 100))
+      : 0
 
   const videoProps = {
     muted: true,
     loop: true,
     playsInline: true,
-    preload: 'metadata' as const,
-  }
+  } as const
 
   return (
     <section ref={sectionRef} id='ai-mentor' className={styles.section}>
@@ -231,42 +246,72 @@ export function AiMentorBlock() {
               <video
                 ref={ruRef}
                 {...videoProps}
+                preload='auto'
                 src={VIDEO_RU}
                 className={`${styles.phoneVideo} ${!isRu ? styles.phoneVideoInactive : ''}`}
               />
               <video
                 ref={enRef}
                 {...videoProps}
+                preload='auto'
                 src={VIDEO_EN}
                 className={`${styles.phoneVideo} ${isRu ? styles.phoneVideoInactive : ''}`}
               />
               <div className={styles.controls}>
-                <div className={styles.seekRow} dir="ltr">
+                <div className={styles.seekRow} dir='ltr'>
                   <button
-                    type="button"
+                    type='button'
                     className={styles.playBtn}
                     onClick={(e) => {
                       e.stopPropagation()
                       togglePlay()
                     }}
                     aria-label={
-                      isPlaying ? t('immersivePilgrimage.pauseVideo') : t('immersivePilgrimage.playVideo')
+                      isPlaying
+                        ? t('immersivePilgrimage.pauseVideo')
+                        : t('immersivePilgrimage.playVideo')
                     }
                   >
                     {isPlaying ? (
-                      <svg width="20" height="20" viewBox="0 0 28 28" fill="none" aria-hidden>
-                        <rect x="6" y="5" width="6" height="18" rx="1" fill="currentColor" />
-                        <rect x="16" y="5" width="6" height="18" rx="1" fill="currentColor" />
+                      <svg
+                        width='20'
+                        height='20'
+                        viewBox='0 0 28 28'
+                        fill='none'
+                        aria-hidden
+                      >
+                        <rect
+                          x='6'
+                          y='5'
+                          width='6'
+                          height='18'
+                          rx='1'
+                          fill='currentColor'
+                        />
+                        <rect
+                          x='16'
+                          y='5'
+                          width='6'
+                          height='18'
+                          rx='1'
+                          fill='currentColor'
+                        />
                       </svg>
                     ) : (
-                      <svg width="20" height="20" viewBox="0 0 28 28" fill="none" aria-hidden>
-                        <path d="M10 6l14 8-14 8V6z" fill="currentColor" />
+                      <svg
+                        width='20'
+                        height='20'
+                        viewBox='0 0 28 28'
+                        fill='none'
+                        aria-hidden
+                      >
+                        <path d='M10 6l14 8-14 8V6z' fill='currentColor' />
                       </svg>
                     )}
                   </button>
                   <span className={styles.time}>{formatTime(currentTime)}</span>
                   <input
-                    type="range"
+                    type='range'
                     className={styles.seek}
                     style={{ '--progress': `${progressPct}%` } as CSSProperties}
                     min={0}

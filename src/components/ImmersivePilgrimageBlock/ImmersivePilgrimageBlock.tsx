@@ -72,7 +72,7 @@ export function ImmersivePilgrimageBlock() {
           autoPlay
           loop
           playsInline
-          preload="metadata"
+          preload="auto"
           onLoadedData={() => setIsVideoReady(true)}
         />
         {isOverlay && textBlock}

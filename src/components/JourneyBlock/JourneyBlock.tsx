@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -59,14 +59,18 @@ const UN_STROKE_END = 6
 const UN_TRANSLATE_X_PX = -245
 const UN_TRANSLATE_Y_PX = -120
 
+const JB_PAD_INLINE = 32
+
 export function JourneyBlock() {
   const { t, i18n } = useTranslation()
   const isAr = i18n.language.startsWith('ar')
   const dotPositions = isAr ? DOT_POSITIONS_AR : DOT_POSITIONS
   const labelTextPosition = isAr ? LABEL_TEXT_POSITION_AR : LABEL_TEXT_POSITION
   const labelTextWidths = isAr ? LABEL_TEXT_WIDTHS_AR : LABEL_TEXT_WIDTHS
+  const [layout, setLayout] = useState<{ w: number; h: number; s: number } | null>(null)
   const sectionRef = useRef<HTMLElement>(null)
   const pinRef = useRef<HTMLDivElement>(null)
+  const blockContentRef = useRef<HTMLDivElement>(null)
   const logoScaleGroupRef = useRef<SVGGElement>(null)
   const pathDIconRef = useRef<SVGPathElement>(null)
   const pathMoonRef = useRef<SVGPathElement>(null)
@@ -82,6 +86,58 @@ export function JourneyBlock() {
     title: string
     text: string
   }>
+
+  useLayoutEffect(() => {
+    const pin = pinRef.current
+    const block = blockContentRef.current
+    if (!pin || !block) return
+
+    let raf = 0
+    const update = () => {
+      cancelAnimationFrame(raf)
+      raf = requestAnimationFrame(() => {
+        const w = block.offsetWidth
+        const h = block.offsetHeight
+        if (w < 1 || h < 1) return
+
+        const pinStyle = getComputedStyle(pin)
+        const padTop = parseFloat(pinStyle.paddingTop) || 0
+        const padBottom = parseFloat(pinStyle.paddingBottom) || 0
+        const availH = pin.clientHeight - padTop - padBottom
+        const availW = Math.max(0, pin.clientWidth - JB_PAD_INLINE * 2)
+
+        const nextS = Math.min(1, availW / w, availH / h)
+        const clamped = Math.max(0.16, nextS)
+
+        setLayout((prev) => {
+          if (
+            prev &&
+            Math.abs(prev.w - w) < 1 &&
+            Math.abs(prev.h - h) < 1 &&
+            Math.abs(prev.s - clamped) < 0.004
+          ) {
+            return prev
+          }
+          return { w, h, s: clamped }
+        })
+      })
+    }
+
+    update()
+    const ro = new ResizeObserver(update)
+    ro.observe(pin)
+    ro.observe(block)
+    window.addEventListener('resize', update)
+    return () => {
+      ro.disconnect()
+      window.removeEventListener('resize', update)
+      cancelAnimationFrame(raf)
+    }
+  }, [i18n.language])
+
+  useEffect(() => {
+    ScrollTrigger.refresh()
+  }, [layout?.s, layout?.w, layout?.h])
 
   useEffect(() => {
     const section = sectionRef.current
@@ -168,6 +224,29 @@ export function JourneyBlock() {
     <>
       <section id='path' ref={sectionRef} className={styles.section}>
         <div ref={pinRef} className={styles.pin}>
+          <div
+            className={styles.pinBlockOuter}
+            style={
+              layout
+                ? {
+                    width: layout.w * layout.s,
+                    height: layout.h * layout.s,
+                  }
+                : { width: '100%' }
+            }
+          >
+            <div
+              ref={blockContentRef}
+              className={styles.pinBlockInner}
+              style={
+                layout
+                  ? {
+                      width: layout.w,
+                      transform: `scale(${layout.s})`,
+                    }
+                  : { width: '100%' }
+            }
+          >
           <div className={styles.titleWrap}>
             <Container>
               <h2 className={styles.title}>{t('journey.title')}</h2>
@@ -306,6 +385,8 @@ export function JourneyBlock() {
               </div>
             ))}
           </div>
+          </div>
+        </div>
         </div>
       </section>
 

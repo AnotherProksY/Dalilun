@@ -38,7 +38,6 @@
   object-fit: cover;
   object-position: center;
   transform: translateZ(0);
-  will-change: transform;
 }
 
 .video {
@@ -85,7 +84,7 @@
         rgb(0 0 0 / 0%) 80%
       );
       pointer-events: none;
-      filter: blur(40px);
+      filter: blur(18px);
     }
 
     :global([dir='rtl']) & {
@@ -102,7 +101,7 @@
           rgb(0 0 0 / 38%) 62%,
           rgb(0 0 0 / 0%) 80%
         );
-        filter: blur(40px);
+        filter: blur(18px);
       }
     }
   }
