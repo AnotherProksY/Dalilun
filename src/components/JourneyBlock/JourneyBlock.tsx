@@ -17,11 +17,11 @@ const DOT_POSITIONS: [number, number][] = [
 
 /** RTL: путь читается справа налево — те же шаги 1→5 привязаны к узлам как на макете ar */
 const DOT_POSITIONS_AR: [number, number][] = [
-  [152, 103],
-  [152, 44],
+  [92, 103],
+  [92, 44],
   [62, 7],
   [11, 93],
-  [-43, 38],
+  [10, 38],
 ]
 
 const LABEL_TEXT_WIDTHS: number[] = [279, 313, 284, 354, 330]
@@ -45,6 +45,15 @@ const LABEL_TEXT_POSITION_AR: ('left' | 'right' | 'top' | 'bottom')[] = [
   'right',
 ]
 
+/** При уменьшенном layout.s (масштаб): пункты 1, 2, 5 — как на втором макете */
+const LABEL_TEXT_POSITION_AR_SCALED: ('left' | 'right' | 'top' | 'bottom')[] = [
+  'right',
+  'right',
+  'top',
+  'bottom',
+  'left',
+]
+
 const MOBILE_STEP_TOP_PCTS: number[] = [
   (46 / 675) * 100,
   (216 / 675) * 100,
@@ -63,11 +72,22 @@ const JB_PAD_INLINE = 32
 
 const JB_DESIGN_HEIGHT = 900
 
+const JB_TITLE_STAGE_GAP_BASE = 260
+
+/** 0 = gap как s; больше — при мелком масштабе gap режется слабее (доля базы при s→0) */
+const JB_TITLE_GAP_SCALE_FLOOR = 0.55
+
+const JB_LAYOUT_SCALED_THRESHOLD = 0.999
+
+function titleStageGapPx(s: number): number {
+  const t = JB_TITLE_GAP_SCALE_FLOOR + (1 - JB_TITLE_GAP_SCALE_FLOOR) * s
+  return JB_TITLE_STAGE_GAP_BASE * t
+}
+
 export function JourneyBlock() {
   const { t, i18n } = useTranslation()
   const isAr = i18n.language.startsWith('ar')
   const dotPositions = isAr ? DOT_POSITIONS_AR : DOT_POSITIONS
-  const labelTextPosition = isAr ? LABEL_TEXT_POSITION_AR : LABEL_TEXT_POSITION
   const labelTextWidths = isAr ? LABEL_TEXT_WIDTHS_AR : LABEL_TEXT_WIDTHS
   const [layout, setLayout] = useState<{
     w: number
@@ -87,6 +107,16 @@ export function JourneyBlock() {
   const pathIRef = useRef<SVGPathElement>(null)
   const pathDotRef = useRef<SVGPathElement>(null)
   const labelsRef = useRef<(HTMLDivElement | null)[]>([])
+
+  const isArScaledLayout =
+    isAr &&
+    layout != null &&
+    layout.s < JB_LAYOUT_SCALED_THRESHOLD
+  const labelTextPosition = isAr
+    ? isArScaledLayout
+      ? LABEL_TEXT_POSITION_AR_SCALED
+      : LABEL_TEXT_POSITION_AR
+    : LABEL_TEXT_POSITION
 
   const steps = t('journey.steps', { returnObjects: true }) as Array<{
     title: string
@@ -255,11 +285,15 @@ export function JourneyBlock() {
                   ? {
                       width: layout.w,
                       transform: `scale(${layout.s})`,
+                      gap: `${titleStageGapPx(layout.s)}px`,
                     }
-                  : { width: '100%' }
+                  : {
+                      width: '100%',
+                      gap: `${JB_TITLE_STAGE_GAP_BASE}px`,
+                    }
               }
             >
-              <div className={styles.titleWrap}>
+              <div className={styles.titleWrap} dir={isAr ? 'rtl' : undefined}>
                 <Container>
                   <h2 className={styles.title}>{t('journey.title')}</h2>
                 </Container>

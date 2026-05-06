@@ -22,9 +22,9 @@
   }
 }
 
+/* Не ставить sticky на элемент с GSAP pin — при отпускании пина и смене position визуально «дёргается» заголовок */
 .pin {
-  position: sticky;
-  top: 0;
+  position: relative;
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -43,14 +43,14 @@
   margin-inline: auto;
   flex-shrink: 0;
   overflow: visible;
+  direction: ltr;
+  unicode-bidi: isolate;
 }
 
 .pinBlockInner {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 260px;
-  gap: 260px;
   transform-origin: top left;
 }
 
@@ -148,6 +148,11 @@
 
 // После textPos*: иначе .textPosRight перебивает выравнивание тем же весом селектора
 .labelAr {
+  &.textPosLeft,
+  &.textPosRight {
+    direction: ltr;
+  }
+
   .stepTextWrap {
     direction: rtl;
     align-items: flex-end;
