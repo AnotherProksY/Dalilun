@@ -42,17 +42,6 @@ export function ContactFormBlock() {
   const closeDropdown = useCallback(() => setDropdownOpen(false), [])
 
   useEffect(() => {
-    if (dropdownOpen) {
-      document.body.style.overflow = 'hidden'
-    } else {
-      document.body.style.overflow = ''
-    }
-    return () => {
-      document.body.style.overflow = ''
-    }
-  }, [dropdownOpen])
-
-  useEffect(() => {
     if (isMobile) return
     function handleOutsideClick(e: MouseEvent) {
       if (
