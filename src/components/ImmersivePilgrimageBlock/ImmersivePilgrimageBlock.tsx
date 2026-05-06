@@ -6,12 +6,14 @@ const VIDEO_MOBILE_MQ = '(max-width: 500px)'
 const VIDEO_OVERLAY_MQ = '(min-width: 1000px)'
 const VIDEO_DESKTOP_SRC = '/Kaaba_Proletka_16_9.mp4'
 const VIDEO_MOBILE_SRC = '/Kaaba_Proletka_9_16.mp4'
+const VIDEO_PLACEHOLDER_SRC = '/immersive-video-placeholder.webp'
 
 export function ImmersivePilgrimageBlock() {
   const { t } = useTranslation()
   const videoRef = useRef<HTMLVideoElement>(null)
   const [isNarrow, setIsNarrow] = useState(false)
   const [isOverlay, setIsOverlay] = useState(false)
+  const [isVideoReady, setIsVideoReady] = useState(false)
 
   const videoSrc = isNarrow ? VIDEO_MOBILE_SRC : VIDEO_DESKTOP_SRC
 
@@ -32,6 +34,10 @@ export function ImmersivePilgrimageBlock() {
   }, [])
 
   useEffect(() => {
+    setIsVideoReady(false)
+  }, [videoSrc])
+
+  useEffect(() => {
     const el = videoRef.current
     if (!el) return
     void el.play().catch(() => {})
@@ -48,6 +54,15 @@ export function ImmersivePilgrimageBlock() {
     <section id="vr" className={styles.section}>
       {!isOverlay && textBlock}
       <div className={styles.videoWrap} data-vr-video-align>
+        <img
+          src={VIDEO_PLACEHOLDER_SRC}
+          alt=""
+          aria-hidden
+          className={`${styles.videoPlaceholder} ${isVideoReady ? styles.videoPlaceholderHidden : ''}`.trim()}
+          width={1920}
+          height={1080}
+          decoding="async"
+        />
         <video
           key={videoSrc}
           ref={videoRef}
@@ -58,6 +73,7 @@ export function ImmersivePilgrimageBlock() {
           loop
           playsInline
           preload="metadata"
+          onLoadedData={() => setIsVideoReady(true)}
         />
         {isOverlay && textBlock}
       </div>
