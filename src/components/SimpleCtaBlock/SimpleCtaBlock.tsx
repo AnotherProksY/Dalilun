@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import { CtaButton } from '@/components/UI/CtaButton/CtaButton'
 import styles from '@/components/SimpleCtaBlock/SimpleCtaBlock.module.scss'
+import { smoothAnchorClickNavigation } from '@/scrollToAnchor'
 
 export function SimpleCtaBlock() {
   const { t } = useTranslation()
@@ -8,7 +9,14 @@ export function SimpleCtaBlock() {
   return (
     <section className={styles.section} data-gap-anchor='simple-cta'>
       <h2 className={styles.title}>{t('simpleCtaBlock.title')}</h2>
-      <CtaButton href="#contact-form">{t('simpleCtaBlock.cta')}</CtaButton>
+      <CtaButton
+        href='#contact-form'
+        onClick={(e) =>
+          smoothAnchorClickNavigation(e.nativeEvent, 'contact-form')
+        }
+      >
+        {t('simpleCtaBlock.cta')}
+      </CtaButton>
     </section>
   )
 }

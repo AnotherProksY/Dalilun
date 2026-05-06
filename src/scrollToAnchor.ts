@@ -189,6 +189,7 @@ function scrollToPath() {
 
 export function scrollToAnchor(elementId: string) {
   const id = elementId.replace(/^#/, '')
+  gsap.killTweensOf(window)
 
   if (id === 'path') {
     scrollToPath()
@@ -227,4 +228,15 @@ export function scrollToAnchor(elementId: string) {
     ease: 'power2.inOut'
   })
   window.history.replaceState(null, '', `#${id}`)
+}
+
+export function smoothAnchorClickNavigation(
+  e: MouseEvent,
+  elementId: string,
+): void {
+  if (e.defaultPrevented) return
+  if (e.button !== 0) return
+  if (e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) return
+  e.preventDefault()
+  scrollToAnchor(elementId)
 }
