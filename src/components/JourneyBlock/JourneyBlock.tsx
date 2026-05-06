@@ -75,7 +75,13 @@ const JB_DESIGN_HEIGHT = 900
 const JB_TITLE_STAGE_GAP_BASE = 260
 
 /** 0 = gap как s; больше — при мелком масштабе gap режется слабее (доля базы при s→0) */
-const JB_TITLE_GAP_SCALE_FLOOR = 0.55
+const JB_TITLE_GAP_SCALE_FLOOR = 0.5
+
+/**
+ * На узких/низких вьюпортах блок вписывается через scale(s).
+ * 1 — полная подгонка в доступную область. <1 — слабее сжатие, >1 — сильнее.
+ */
+const JB_LAYOUT_SCALE_INTENSITY = 1.2
 
 const JB_LAYOUT_SCALED_THRESHOLD = 0.999
 
@@ -143,7 +149,9 @@ export function JourneyBlock() {
         const availW = Math.max(0, pin.clientWidth - JB_PAD_INLINE * 2)
 
         const hForFit = Math.max(h, JB_DESIGN_HEIGHT)
-        const nextS = Math.min(1, availW / w, availH / hForFit)
+        const fitS = Math.min(1, availW / w, availH / hForFit)
+        const k = Math.max(0, JB_LAYOUT_SCALE_INTENSITY)
+        const nextS = 1 - (1 - fitS) * k
         const clamped = Math.max(0.16, nextS)
 
         setLayout((prev) => {
