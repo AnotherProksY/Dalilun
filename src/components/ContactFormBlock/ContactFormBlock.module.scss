@@ -269,7 +269,6 @@
   transition:
     background 0.15s,
     border-color 0.15s;
-
 }
 
 .bottomSheetOptionActive {
@@ -296,6 +295,10 @@
   cursor: pointer;
   user-select: none;
   margin: 4px 0;
+
+  span {
+    max-width: 600px;
+  }
 
   @media (max-width: 768px) {
     font-size: 12px;

@@ -7,6 +7,7 @@ const VIDEO_OVERLAY_MQ = '(min-width: 1000px)'
 const VIDEO_DESKTOP_SRC = '/Kaaba_Proletka_16_9.mp4'
 const VIDEO_MOBILE_SRC = '/Kaaba_Proletka_9_16.mp4'
 const VIDEO_PLACEHOLDER_SRC = '/immersive-video-placeholder.webp'
+const LOOP_PAUSE_MS = 3000
 
 export function ImmersivePilgrimageBlock() {
   const { t } = useTranslation()
@@ -43,6 +44,27 @@ export function ImmersivePilgrimageBlock() {
     void el.play().catch(() => {})
   }, [videoSrc])
 
+  useEffect(() => {
+    const el = videoRef.current
+    if (!el) return
+
+    let pauseTimer: ReturnType<typeof setTimeout> | undefined
+
+    const onEnded = () => {
+      if (pauseTimer) clearTimeout(pauseTimer)
+      pauseTimer = setTimeout(() => {
+        el.currentTime = 0
+        void el.play().catch(() => {})
+      }, LOOP_PAUSE_MS)
+    }
+
+    el.addEventListener('ended', onEnded)
+    return () => {
+      el.removeEventListener('ended', onEnded)
+      if (pauseTimer) clearTimeout(pauseTimer)
+    }
+  }, [videoSrc])
+
   const textBlock = (
     <div className={styles.textOverlay}>
       <h2 className={styles.title}>{t('immersivePilgrimage.title')}</h2>
@@ -70,7 +92,6 @@ export function ImmersivePilgrimageBlock() {
           src={videoSrc}
           muted
           autoPlay
-          loop
           playsInline
           preload="auto"
           onLoadedData={() => setIsVideoReady(true)}

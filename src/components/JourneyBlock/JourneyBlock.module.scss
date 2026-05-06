@@ -1,11 +1,7 @@
 .section {
   position: relative;
   display: block;
-  margin-bottom: 0px;
-
-  @media (min-width: 1301px) and (max-width: 1600px) {
-    margin-bottom: 240px;
-  }
+  margin-bottom: 72px;
 
   @media (max-width: 1300px) {
     display: none;
@@ -53,6 +49,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 260px;
   gap: 260px;
   transform-origin: top left;
 }

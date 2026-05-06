@@ -15,7 +15,7 @@ const en = {
     cards: [
       {
         tag: 'New Muslims',
-        title: 'Have you recently embraced Islamand are not sure where to begin?',
+        title: 'Have you recently embraced Islam and are not sure where to begin?',
         text: 'We have created a personal journey for you, from Shahada to Hajj, step by step and at your own pace',
       },
       {
@@ -79,7 +79,7 @@ const en = {
   },
   immersivePilgrimage: {
     title: 'Immersive Hajj and Umrah',
-    text: 'IExperience Umrah and Hajj through 3D and VR, exploring each ritual as if you were there',
+    text: 'Experience Umrah and Hajj through 3D and VR, exploring each ritual as if you were there',
     playVideo: 'Play video',
     pauseVideo: 'Pause',
   },

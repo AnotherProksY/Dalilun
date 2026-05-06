@@ -167,6 +167,10 @@
   line-height: 28px;
   margin: 0;
 
+  @media (min-width: 1170px) {
+    max-width: 383px;
+  }
+
   @media (max-width: 500px) {
     font-size: 16px;
     line-height: 20px;
@@ -180,6 +184,10 @@
   color: #b3b3b3;
   line-height: 28px;
   margin: 0;
+
+  @media (min-width: 1170px) {
+    max-width: 383px;
+  }
 
   @media (max-width: 500px) {
     font-size: 16px;

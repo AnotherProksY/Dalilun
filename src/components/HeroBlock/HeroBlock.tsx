@@ -13,8 +13,16 @@ const HERO_CTA_ATTRACT_CLUSTER = 0.12
 const HERO_CTA_CLUSTER_SOFT = 0.088
 const HERO_CTA_CLUSTER_POW = 1.38
 
+function heroSubtitleMaxWidth(language: string): number {
+  const base = language.split('-')[0]
+  if (base === 'ru') return 420
+  if (base === 'en') return 660
+  if (base === 'ar') return 580
+  return 420
+}
+
 export function HeroBlock() {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const galaxyRef = useRef<HTMLDivElement>(null)
   const galaxyInteractionBoostRef = useRef(1)
   const galaxyAttractionRef = useRef(0)
@@ -56,7 +64,12 @@ export function HeroBlock() {
 
       <div className={styles.content}>
         <h1 className={styles.title}>{t('hero.title')}</h1>
-        <p className={styles.subtitle}>{t('hero.subtitle')}</p>
+        <p
+          className={styles.subtitle}
+          style={{ maxWidth: heroSubtitleMaxWidth(i18n.language) }}
+        >
+          {t('hero.subtitle')}
+        </p>
         <div
           onMouseMove={handleMouseMove}
           onMouseEnter={() => {
