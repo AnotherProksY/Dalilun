@@ -16,7 +16,6 @@
   overflow: hidden;
   width: 100%;
   max-height: 740px;
-  contain: content;
 
   @media (min-width: 501px) {
     aspect-ratio: 16 / 9;
@@ -63,6 +62,7 @@
 
   @media (min-width: 1000px) {
     position: absolute;
+    z-index: 2;
     bottom: 0;
     left: 0;
     width: 100%;
@@ -73,6 +73,7 @@
     &::before {
       content: '';
       position: absolute;
+      z-index: 0;
       inset: -50px -50px -50px -50px;
       background: radial-gradient(
         ellipse 185% 165% at 0% 100%,
