@@ -1,12 +1,17 @@
 import gsap from 'gsap'
+import { ScrollToPlugin } from 'gsap/ScrollToPlugin'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 gsap.registerPlugin(ScrollTrigger)
+gsap.registerPlugin(ScrollToPlugin)
 
 const JOURNEY_SCROLL_TRIGGER_ID = 'journey-path'
 const DESKTOP_JOURNEY_MQ = '(min-width: 1301px)'
 const VR_VIDEO_OVERLAY_MQ = '(min-width: 1000px)'
+
 const VR_SCROLL_OFFSET_TOP_PX = 100
+const SECTION_HEADER_SCROLL_OFFSET_TOP_PX = 110
+const ANCHOR_IDS_WITH_HEADER_OFFSET = new Set(['about', 'ai-mentor'])
 
 function scrollToPath() {
   const desktop = window.matchMedia(DESKTOP_JOURNEY_MQ).matches
@@ -15,7 +20,11 @@ function scrollToPath() {
   if (desktop) {
     const st = ScrollTrigger.getById(JOURNEY_SCROLL_TRIGGER_ID)
     if (st && st.end > st.start) {
-      window.scrollTo({ top: st.end, behavior: 'smooth' })
+      gsap.to(window, {
+        duration: 1,
+        scrollTo: st.end,
+        ease: 'power2.inOut'
+      })
       window.history.replaceState(null, '', '#path')
       return
     }
@@ -26,7 +35,11 @@ function scrollToPath() {
         : window.innerHeight * 1.8
     if (section) {
       const top = section.offsetTop + h - window.innerHeight
-      window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' })
+      gsap.to(window, {
+        duration: 1,
+        scrollTo: Math.max(0, top),
+        ease: 'power2.inOut'
+      })
       window.history.replaceState(null, '', '#path')
       return
     }
@@ -34,7 +47,11 @@ function scrollToPath() {
 
   const mobile = document.querySelector<HTMLElement>('[data-journey-mobile]')
   if (mobile) {
-    mobile.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    gsap.to(window, {
+      duration: 1,
+      scrollTo: mobile,
+      ease: 'power2.inOut'
+    })
     window.history.replaceState(null, '', '#path')
   }
 }
@@ -55,7 +72,11 @@ export function scrollToAnchor(elementId: string) {
         videoEl.getBoundingClientRect().top +
         window.scrollY -
         VR_SCROLL_OFFSET_TOP_PX
-      window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' })
+        gsap.to(window, {
+          duration: 1,
+          scrollTo: Math.max(0, top),
+          ease: 'power2.inOut'
+        })
       window.history.replaceState(null, '', '#vr')
       return
     }
@@ -63,6 +84,16 @@ export function scrollToAnchor(elementId: string) {
 
   const el = document.getElementById(id)
   if (!el) return
-  el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  const offsetY = ANCHOR_IDS_WITH_HEADER_OFFSET.has(id)
+    ? SECTION_HEADER_SCROLL_OFFSET_TOP_PX
+    : 0
+  gsap.to(window, {
+    duration: 1,
+    scrollTo: {
+      y: el,
+      offsetY
+    },
+    ease: 'power2.inOut'
+  })
   window.history.replaceState(null, '', `#${id}`)
 }
