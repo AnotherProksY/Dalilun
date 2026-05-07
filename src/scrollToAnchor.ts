@@ -7,11 +7,53 @@ gsap.registerPlugin(ScrollToPlugin)
 
 const JOURNEY_SCROLL_TRIGGER_ID = 'journey-path'
 const DESKTOP_JOURNEY_MQ = '(min-width: 1301px)'
-const VR_VIDEO_OVERLAY_MQ = '(min-width: 1000px)'
+/** От этой ширины — скролл к центру блока; уже — к верху блока */
+const ANCHOR_CENTER_LAYOUT_MQ = '(min-width: 1000px)'
+/** На экранах уже 1000px: скролл к Journey (mobile) короче на эти px */
+const JOURNEY_MOBILE_STOP_EARLY_PX = 0
 
-const VR_SCROLL_OFFSET_TOP_PX = 100
-const SECTION_HEADER_SCROLL_OFFSET_TOP_PX = 110
-const ANCHOR_IDS_WITH_HEADER_OFFSET = new Set(['about', 'ai-mentor'])
+/** Шире 2000px: к форме контактов скроллим ниже на эти px */
+const CONTACT_FORM_ULTRAWIDE_MQ = '(min-width: 2001px)'
+const CONTACT_FORM_ULTRAWIDE_EXTRA_SCROLL_PX = 100
+
+function clampScrollY(y: number): number {
+  const maxY = Math.max(
+    0,
+    document.documentElement.scrollHeight - window.innerHeight,
+  )
+  return Math.max(0, Math.min(y, maxY))
+}
+
+function getHeaderHeightPx(): number {
+  const header = document.querySelector('header')
+  return header?.offsetHeight ?? 0
+}
+
+/** Центр элемента — по центру видимой области под шапкой (шапка всегда вверху) */
+function getScrollYToVerticallyCenterElement(el: HTMLElement): number {
+  const rect = el.getBoundingClientRect()
+  const headerH = getHeaderHeightPx()
+  const elementCenterY = window.scrollY + rect.top + rect.height / 2
+  const visibleMidY = (window.innerHeight + headerH) / 2
+  const rawY = elementCenterY - visibleMidY
+  const maxY = Math.max(
+    0,
+    document.documentElement.scrollHeight - window.innerHeight,
+  )
+  return Math.max(0, Math.min(rawY, maxY))
+}
+
+/** Верх блока у нижней границы шапки */
+function getScrollYToBlockStartUnderHeader(el: HTMLElement): number {
+  const rect = el.getBoundingClientRect()
+  const headerH = getHeaderHeightPx()
+  const rawY = window.scrollY + rect.top - headerH
+  const maxY = Math.max(
+    0,
+    document.documentElement.scrollHeight - window.innerHeight,
+  )
+  return Math.max(0, Math.min(rawY, maxY))
+}
 
 /** px/s: участок до начала scrub JourneyBlock (совпадает с start: 'top top') */
 const JOURNEY_APPROACH_PX_PER_SEC = 3200
@@ -178,11 +220,28 @@ function scrollToPath() {
 
   const mobile = document.querySelector<HTMLElement>('[data-journey-mobile]')
   if (mobile) {
-    gsap.to(window, {
-      duration: 1,
-      scrollTo: mobile,
-      ease: 'power2.inOut'
-    })
+    const narrow = !window.matchMedia(ANCHOR_CENTER_LAYOUT_MQ).matches
+    if (narrow) {
+      const maxY = Math.max(
+        0,
+        document.documentElement.scrollHeight - window.innerHeight,
+      )
+      const rawY =
+        getScrollYToBlockStartUnderHeader(mobile) -
+        JOURNEY_MOBILE_STOP_EARLY_PX
+      const y = Math.max(0, Math.min(rawY, maxY))
+      gsap.to(window, {
+        duration: 1,
+        scrollTo: y,
+        ease: 'power2.inOut',
+      })
+    } else {
+      gsap.to(window, {
+        duration: 1,
+        scrollTo: mobile,
+        ease: 'power2.inOut',
+      })
+    }
     window.history.replaceState(null, '', '#path')
   }
 }
@@ -196,35 +255,21 @@ export function scrollToAnchor(elementId: string) {
     return
   }
 
-  if (id === 'vr' && window.matchMedia(VR_VIDEO_OVERLAY_MQ).matches) {
-    const section = document.getElementById('vr')
-    const videoEl = section?.querySelector<HTMLElement>('[data-vr-video-align]')
-    if (section && videoEl) {
-      const top =
-        videoEl.getBoundingClientRect().top +
-        window.scrollY -
-        VR_SCROLL_OFFSET_TOP_PX
-        gsap.to(window, {
-          duration: 1,
-          scrollTo: Math.max(0, top),
-          ease: 'power2.inOut'
-        })
-      window.history.replaceState(null, '', '#vr')
-      return
-    }
-  }
-
   const el = document.getElementById(id)
   if (!el) return
-  const offsetY = ANCHOR_IDS_WITH_HEADER_OFFSET.has(id)
-    ? SECTION_HEADER_SCROLL_OFFSET_TOP_PX
-    : 0
+  const useCenter = window.matchMedia(ANCHOR_CENTER_LAYOUT_MQ).matches
+  let y = useCenter
+    ? getScrollYToVerticallyCenterElement(el)
+    : getScrollYToBlockStartUnderHeader(el)
+  if (
+    id === 'contact-form' &&
+    window.matchMedia(CONTACT_FORM_ULTRAWIDE_MQ).matches
+  ) {
+    y = clampScrollY(y + CONTACT_FORM_ULTRAWIDE_EXTRA_SCROLL_PX)
+  }
   gsap.to(window, {
     duration: 1,
-    scrollTo: {
-      y: el,
-      offsetY
-    },
+    scrollTo: y,
     ease: 'power2.inOut'
   })
   window.history.replaceState(null, '', `#${id}`)
