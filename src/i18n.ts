@@ -2,10 +2,9 @@ import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
 import ru from '@/locales/ru'
 import en from '@/locales/en'
-import ar from '@/locales/ar'
 
 const LANG_STORAGE_KEY = 'dalilun-language'
-const SUPPORTED_LANGS = ['ru', 'en', 'ar'] as const
+const SUPPORTED_LANGS = ['ru', 'en'] as const
 
 function readStoredLanguage(): (typeof SUPPORTED_LANGS)[number] {
   try {
@@ -23,7 +22,6 @@ i18n.use(initReactI18next).init({
   resources: {
     ru: { translation: ru },
     en: { translation: en },
-    ar: { translation: ar },
   },
   lng: readStoredLanguage(),
   fallbackLng: 'ru',

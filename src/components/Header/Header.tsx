@@ -6,7 +6,6 @@ import { scrollToAnchor } from '@/scrollToAnchor'
 import styles from '@/components/Header/Header.module.scss'
 
 const LANGUAGES = [
-  { code: 'ar', label: 'عربي' },
   { code: 'en', label: 'English' },
   { code: 'ru', label: 'Русский' },
 ]
@@ -33,7 +32,7 @@ export function Header() {
   }, [])
 
   const currentLang =
-    LANGUAGES.find((l) => l.code === i18n.language) ?? LANGUAGES[2]
+    LANGUAGES.find((l) => l.code === i18n.language) ?? LANGUAGES[1]
 
   const handleSelect = (code: string) => {
     void i18n.changeLanguage(code)
