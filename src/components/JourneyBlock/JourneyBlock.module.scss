@@ -8,17 +8,27 @@
   }
 }
 
-.titleWrap {
+/* Заголовок вне scale: как MainPage — Container + горизонтальный padding как у WeHelpBlock.section */
+.pinDesktopTitle {
   width: 100%;
-  padding: 0 24px;
   flex-shrink: 0;
+  align-self: stretch;
+  box-sizing: border-box;
+}
+
+.pinDesktopTitleInset {
+  padding-left: 24px;
+  padding-right: 24px;
+  box-sizing: border-box;
 
   @media (min-width: 768px) {
-    padding: 40px;
+    padding-left: 40px;
+    padding-right: 40px;
   }
 
   @media (min-width: 1480px) {
-    padding: 0;
+    padding-left: 0;
+    padding-right: 0;
   }
 }
 
@@ -62,6 +72,8 @@
   letter-spacing: 0.4px;
   line-height: 56px;
   margin: 0;
+  max-width: 1440px;
+  box-sizing: border-box;
 
   @media (max-width: 768px) {
     text-align: center;

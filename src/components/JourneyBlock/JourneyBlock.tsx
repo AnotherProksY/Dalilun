@@ -79,9 +79,12 @@ const JB_TITLE_GAP_SCALE_FLOOR = 0.5
 
 /**
  * На узких/низких вьюпортах блок вписывается через scale(s).
- * 1 — полная подгонка в доступную область. <1 — слабее сжатие, >1 — сильнее.
+ * 1 — полная подгонка в доступную область. Меньше — слабее сжатие (ближе к 1).
  */
-const JB_LAYOUT_SCALE_INTENSITY = 1.2
+const JB_LAYOUT_SCALE_INTENSITY = 0.63
+
+/** Не опускать layout.s ниже этого — меньше «ломает» картинку на низких экранах */
+const JB_LAYOUT_SCALE_MIN = 0.2
 
 const JB_LAYOUT_SCALED_THRESHOLD = 0.999
 
@@ -102,6 +105,7 @@ export function JourneyBlock() {
   } | null>(null)
   const sectionRef = useRef<HTMLElement>(null)
   const pinRef = useRef<HTMLDivElement>(null)
+  const pinDesktopTitleRef = useRef<HTMLDivElement>(null)
   const blockContentRef = useRef<HTMLDivElement>(null)
   const logoScaleGroupRef = useRef<SVGGElement>(null)
   const pathDIconRef = useRef<SVGPathElement>(null)
@@ -145,14 +149,23 @@ export function JourneyBlock() {
         const pinStyle = getComputedStyle(pin)
         const padTop = parseFloat(pinStyle.paddingTop) || 0
         const padBottom = parseFloat(pinStyle.paddingBottom) || 0
-        const availH = pin.clientHeight - padTop - padBottom
+        const titleH =
+          pinDesktopTitleRef.current?.getBoundingClientRect().height ?? 0
+        let availH = pin.clientHeight - padTop - padBottom - titleH
         const availW = Math.max(0, pin.clientWidth - JB_PAD_INLINE * 2)
 
         const hForFit = Math.max(h, JB_DESIGN_HEIGHT)
-        const fitS = Math.min(1, availW / w, availH / hForFit)
         const k = Math.max(0, JB_LAYOUT_SCALE_INTENSITY)
-        const nextS = 1 - (1 - fitS) * k
-        const clamped = Math.max(0.16, nextS)
+
+        const fitScale = (availHeight: number) => {
+          const fitS = Math.min(1, availW / w, availHeight / hForFit)
+          return Math.max(JB_LAYOUT_SCALE_MIN, 1 - (1 - fitS) * k)
+        }
+
+        let clamped = fitScale(availH)
+        const gapVis = clamped * titleStageGapPx(clamped)
+        availH = pin.clientHeight - padTop - padBottom - titleH - gapVis
+        clamped = fitScale(availH)
 
         setLayout((prev) => {
           if (
@@ -172,6 +185,8 @@ export function JourneyBlock() {
     const ro = new ResizeObserver(update)
     ro.observe(pin)
     ro.observe(block)
+    const titleEl = pinDesktopTitleRef.current
+    if (titleEl) ro.observe(titleEl)
     window.addEventListener('resize', update)
     return () => {
       ro.disconnect()
@@ -274,6 +289,16 @@ export function JourneyBlock() {
     <>
       <section id='path' ref={sectionRef} className={styles.section}>
         <div ref={pinRef} className={styles.pin}>
+          <div ref={pinDesktopTitleRef} className={styles.pinDesktopTitle}>
+            <Container>
+              <div
+                className={styles.pinDesktopTitleInset}
+                dir={isAr ? 'rtl' : undefined}
+              >
+                <h2 className={styles.title}>{t('journey.title')}</h2>
+              </div>
+            </Container>
+          </div>
           <div
             className={styles.pinBlockOuter}
             style={
@@ -281,6 +306,7 @@ export function JourneyBlock() {
                 ? {
                     width: layout.w * layout.s,
                     height: layout.h * layout.s,
+                    marginTop: `${layout.s * titleStageGapPx(layout.s)}px`,
                   }
                 : { width: '100%' }
             }
@@ -293,19 +319,10 @@ export function JourneyBlock() {
                   ? {
                       width: layout.w,
                       transform: `scale(${layout.s})`,
-                      gap: `${titleStageGapPx(layout.s)}px`,
                     }
-                  : {
-                      width: '100%',
-                      gap: `${JB_TITLE_STAGE_GAP_BASE}px`,
-                    }
+                  : { width: '100%' }
               }
             >
-              <div className={styles.titleWrap} dir={isAr ? 'rtl' : undefined}>
-                <Container>
-                  <h2 className={styles.title}>{t('journey.title')}</h2>
-                </Container>
-              </div>
               <div className={styles.stage}>
                 {/* Логотип SVG — все буквы скрываются при скролле */}
                 <svg
