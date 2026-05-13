@@ -98,7 +98,7 @@ const en = {
     successTitle: 'Your contacts have been sent',
     successSubtitle: 'We’ll keep you updated with the latest news',
     successButton: 'Ok',
-    errorMessage: 'An er ror occurred. Please try again.',
+    errorMessage: 'An error occurred. Please try again.',
     validationContact: 'This field cannot be empty',
     validationContactFormat: 'Invalid format',
     validationGoal: 'Please select an option',

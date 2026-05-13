@@ -2,6 +2,7 @@ import { useState, useRef, useEffect, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { CtaButton } from '@/components/UI/CtaButton/CtaButton'
 import { Icon } from '@/components/UI/Icon/Icon'
+import { supabase } from '@/lib/supabase'
 import styles from './ContactFormBlock.module.scss'
 
 function useIsMobile() {
@@ -21,7 +22,7 @@ function isValidContact(value: string) {
 }
 
 export function ContactFormBlock() {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const isMobile = useIsMobile()
 
   const goalOptions = t('contactForm.goalOptions', {
@@ -113,11 +114,13 @@ export function ContactFormBlock() {
     }
     setStatus('loading')
     try {
-      await fetch('https://jsonplaceholder.typicode.com/posts', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ contact, name, goal }),
+      const { error } = await supabase.from('applications').insert({
+        contact,
+        name: name || null,
+        goal,
+        language: i18n.language,
       })
+      if (error) throw error
       resetForm()
       setStatus('success')
     } catch {
