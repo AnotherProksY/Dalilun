@@ -2,7 +2,6 @@ import { useState, useRef, useEffect, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { CtaButton } from '@/components/UI/CtaButton/CtaButton'
 import { Icon } from '@/components/UI/Icon/Icon'
-import { supabase } from '@/lib/supabase'
 import styles from './ContactFormBlock.module.scss'
 
 function useIsMobile() {
@@ -114,13 +113,12 @@ export function ContactFormBlock() {
     }
     setStatus('loading')
     try {
-      const { error } = await supabase.from('applications').insert({
-        contact,
-        name: name || null,
-        goal,
-        language: i18n.language,
+      const response = await fetch('/api/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ contact, name: name || null, goal, language: i18n.language }),
       })
-      if (error) throw error
+      if (!response.ok) throw new Error('Server error')
       resetForm()
       setStatus('success')
     } catch {
