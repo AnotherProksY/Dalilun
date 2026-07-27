@@ -15,6 +15,10 @@ const supabase = createClient(
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const TELEGRAM_REGEX = /^@\w{4,}$/
 
+app.get('/healthz', (_req, res) => {
+  res.type('text/plain').send('ok')
+})
+
 app.post('/api/submit', async (req, res) => {
   const { contact, name, goal, language } = req.body ?? {}
 
@@ -42,6 +46,9 @@ app.post('/api/submit', async (req, res) => {
 })
 
 const port = process.env.PORT ?? 3001
-app.listen(port, 'localhost', () => {
-  console.log(`API server running on localhost:${port}`)
+// В Docker сервис слушает на всех интерфейсах, чтобы быть доступным по имени
+// контейнера (api:3001) для соседнего nginx-контейнера, а не только с loopback.
+const host = process.env.HOST ?? '0.0.0.0'
+app.listen(port, host, () => {
+  console.log(`API server running on ${host}:${port}`)
 })
