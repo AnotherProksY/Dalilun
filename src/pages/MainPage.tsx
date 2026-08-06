@@ -5,19 +5,23 @@ import { WeHelpBlock } from '@/components/WeHelpBlock/WeHelpBlock'
 import { JourneyBlock } from '@/components/JourneyBlock/JourneyBlock'
 import { ImmersivePilgrimageBlock } from '@/components/ImmersivePilgrimageBlock/ImmersivePilgrimageBlock'
 import { SimpleCtaBlock } from '@/components/SimpleCtaBlock/SimpleCtaBlock'
-import { AiMentorBlock } from '@/components/AiMentorBlock/AiMentorBlock'
+import { UmmaQuestBlock } from '@/components/UmmaQuestBlock/UmmaQuestBlock'
 import { ContactFormBlock } from '@/components/ContactFormBlock/ContactFormBlock'
+import { UmmaFestPosterBlock } from '@/components/UmmaFestPosterBlock/UmmaFestPosterBlock'
 
 export function MainPage() {
   return (
     <MainLayout>
       <Container>
         <HeroBlock />
+      </Container>
+      <UmmaFestPosterBlock />
+      <Container>
         <WeHelpBlock />
       </Container>
       <JourneyBlock />
       <SimpleCtaBlock />
-      <AiMentorBlock />
+      <UmmaQuestBlock />
       <Container>
         <ImmersivePilgrimageBlock />
         <ContactFormBlock />

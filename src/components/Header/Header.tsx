@@ -1,22 +1,16 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Icon } from '@/components/UI/Icon/Icon'
 import { CtaButton } from '@/components/UI/CtaButton/CtaButton'
-import { scrollToAnchor } from '@/scrollToAnchor'
+import { useAnchorNavigation } from '@/useAnchorNavigation'
 import styles from '@/components/Header/Header.module.scss'
 
-const LANGUAGES = [
-  { code: 'en', label: 'English' },
-  { code: 'ru', label: 'Русский' },
-]
-
 export function Header() {
-  const { t, i18n } = useTranslation()
-  const [open, setOpen] = useState(false)
+  const { t } = useTranslation()
+  const goToAnchor = useAnchorNavigation()
   const [menuOpen, setMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const [isMobile, setIsMobile] = useState(() => window.innerWidth <= 780)
-  const ref = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 0)
@@ -31,25 +25,13 @@ export function Header() {
     return () => window.removeEventListener('resize', onResize)
   }, [])
 
-  const currentLang =
-    LANGUAGES.find((l) => l.code === i18n.language) ?? LANGUAGES[1]
-
-  const handleSelect = (code: string) => {
-    void i18n.changeLanguage(code)
-    setOpen(false)
-  }
-
-  const handleMobileSelect = (code: string) => {
-    void i18n.changeLanguage(code)
-    setOpen(false)
-    setMenuOpen(false)
-  }
-
   const navLinks = [
     { key: 'nav.about', label: t('nav.about'), anchorId: 'about' },
     { key: 'nav.path', label: t('nav.path'), anchorId: 'path' },
-    { key: 'nav.aiMentor', label: t('nav.aiMentor'), anchorId: 'ai-mentor' },
+    { key: 'nav.aiMentor', label: t('nav.aiMentor'), anchorId: 'umma-quest' },
     { key: 'nav.vr', label: t('nav.vr'), anchorId: 'vr' },
+    { key: 'nav.live', label: t('nav.live'), href: 'https://live.dalilunfaith.tech' },
+    { key: 'nav.frames', label: t('nav.frames'), href: 'https://frames.dalilunfaith.tech' },
   ]
 
   return (
@@ -65,52 +47,32 @@ export function Header() {
         </a>
 
         <nav className={styles.nav}>
-          {navLinks.map((link) => (
-            <a
-              key={link.key}
-              href={`#${link.anchorId}`}
-              className={styles.navLink}
-              onClick={(e) => {
-                e.preventDefault()
-                scrollToAnchor(link.anchorId)
-              }}
-            >
-              {link.label}
-            </a>
-          ))}
-        </nav>
-
-        <div className={styles.langWrapper} ref={ref}>
-          <button
-            className={styles.langButton}
-            type='button'
-            onClick={() => setOpen((v) => !v)}
-          >
-            {currentLang.label}
-            <Icon
-              id='chevron'
-              width={16}
-              height={16}
-              className={`${styles.chevron} ${open ? styles.chevronOpen : ''}`}
-            />
-          </button>
-
-          {open && (
-            <ul className={styles.dropdown}>
-              {LANGUAGES.map((l) => (
-                <li key={l.code}>
-                  <button
-                    type='button'
-                    className={`${styles.dropdownItem} ${l.code === i18n.language ? styles.dropdownItemActive : ''}`}
-                    onClick={() => handleSelect(l.code)}
-                  >
-                    {l.label}
-                  </button>
-                </li>
-              ))}
-            </ul>
+          {navLinks.map((link) =>
+            link.href ? (
+              <a
+                key={link.key}
+                href={link.href}
+                className={styles.navLink}
+                target='_blank'
+                rel='noopener noreferrer'
+              >
+                {link.label}
+              </a>
+            ) : (
+              <a
+                key={link.key}
+                href={`#${link.anchorId}`}
+                className={styles.navLink}
+                onClick={(e) => {
+                  e.preventDefault()
+                  goToAnchor(link.anchorId!)
+                }}
+              >
+                {link.label}
+              </a>
+            ),
           )}
-        </div>
+        </nav>
 
         <button
           className={styles.burgerButton}
@@ -149,57 +111,40 @@ export function Header() {
         </div>
 
         <nav className={styles.mobileNav}>
-          {navLinks.map((link) => (
-            <a
-              key={link.key}
-              href={`#${link.anchorId}`}
-              className={styles.mobileNavLink}
-              onClick={(e) => {
-                e.preventDefault()
-                setMenuOpen(false)
-                scrollToAnchor(link.anchorId)
-              }}
-            >
-              {link.label}
-            </a>
-          ))}
-
-          <div className={styles.mobileLangWrapper}>
-            <button
-              className={styles.mobileLangButton}
-              type='button'
-              onClick={() => setOpen((v) => !v)}
-            >
-              {currentLang.label}
-              <Icon
-                id='chevron'
-                width={16}
-                height={16}
-                className={`${styles.chevron} ${open ? styles.chevronOpen : ''}`}
-              />
-            </button>
-
-            <ul
-              className={`${styles.mobileDropdown} ${open ? styles.mobileDropdownOpen : ''}`}
-            >
-              {LANGUAGES.map((l) => (
-                <li key={l.code}>
-                  <button
-                    type='button'
-                    className={`${styles.mobileDropdownItem} ${l.code === i18n.language ? styles.dropdownItemActive : ''}`}
-                    onClick={() => handleMobileSelect(l.code)}
-                  >
-                    {l.label}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
+          {navLinks.map((link) =>
+            link.href ? (
+              <a
+                key={link.key}
+                href={link.href}
+                className={styles.mobileNavLink}
+                target='_blank'
+                rel='noopener noreferrer'
+                onClick={() => setMenuOpen(false)}
+              >
+                {link.label}
+              </a>
+            ) : (
+              <a
+                key={link.key}
+                href={`#${link.anchorId}`}
+                className={styles.mobileNavLink}
+                onClick={(e) => {
+                  e.preventDefault()
+                  setMenuOpen(false)
+                  goToAnchor(link.anchorId!)
+                }}
+              >
+                {link.label}
+              </a>
+            ),
+          )}
 
           <CtaButton
             className={styles.mobileCtaButton}
-            href='#contact-form'
-            onClick={() => setMenuOpen(false)}
+            onClick={() => {
+              setMenuOpen(false)
+              goToAnchor('contact-form')
+            }}
           >
             {t('hero.cta')}
           </CtaButton>

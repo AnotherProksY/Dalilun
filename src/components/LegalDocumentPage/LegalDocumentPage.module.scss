@@ -1,0 +1,51 @@
+.page {
+  /* header: padding 32 + logo 36 + padding 32 + отступ */
+  padding: 132px 40px 80px;
+
+  @media (max-width: 780px) {
+    padding: 100px 24px 60px;
+  }
+}
+
+.title {
+  font-family: 'Geologica', sans-serif;
+  font-size: 32px;
+  font-weight: 800;
+  line-height: 1.2;
+  color: #fff;
+  margin-bottom: 32px;
+  text-align: center;
+
+  @media (max-width: 768px) {
+    font-size: 24px;
+    margin-bottom: 24px;
+  }
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.paragraph {
+  font-family: 'Geologica', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.6;
+  color: #b3b3b3;
+
+  @media (max-width: 768px) {
+    font-size: 14px;
+  }
+}
+
+.link {
+  color: #fff;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}

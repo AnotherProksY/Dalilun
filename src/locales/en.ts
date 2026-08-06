@@ -2,8 +2,10 @@ const en = {
   nav: {
     about: 'About',
     path: 'Journey',
-    aiMentor: 'AI Mentor',
+    aiMentor: 'Umma Quest',
     vr: '3D/VR',
+    live: 'Live',
+    frames: 'Frames',
   },
   hero: {
     title: 'Your Personal Journey in Islam',
@@ -59,23 +61,31 @@ const en = {
     title: 'We Make The Journey Simple',
     cta: 'Start Your Journey',
   },
-  aiMentorBlock: {
-    title: 'Your AI Faith Mentor',
-    subtitle: 'Learn and ask questions anytime. A mentor that understands your context, provides thoughtful guidance, and helps you deepen your understanding',
-    features: [
-      {
-        title: 'Understands You',
-        text: 'Adapts to your level and goals',
-      },
-      {
-        title: 'Learning Through Dialogue',
-        text: 'Learn through conversation, just as you would with a real teacher',
-      },
-      {
-        title: 'Reliable Islamic Guidance',
-        text: 'All answers are grounded in reliable Sharia sources',
-      },
+  ummaFest: {
+    title: 'See you at\nUMMA Fest 2026',
+    date: 'August 7–9, 2026',
+    time: '11:00–20:00',
+    location: 'Moscow, Danilovsky Event Hall',
+    address: '71 Dubininskaya St.',
+    description:
+      'For the first time, we will present the Dalilun digital project ecosystem at Russia\'s largest Islamic forum',
+    projects: ['Dalilun', 'Dalilun Live', 'Dalilun Frames', 'Meta Hajj', 'Digital Mosques'],
+    partnerLabel: 'Expert Partner',
+    partnerText: 'Expert guidance on matters of religious content for the project',
+  },
+  ummaQuestBlock: {
+    title: 'Umma Quest 2026 Special Project',
+    lead: 'A Muslim\'s relationship with their sins',
+    description:
+      'An interactive journey that helps you look at your actions in a new light, reflect on the mercy of the Almighty, and learn what steps you can take on the path to sincere repentance.',
+    bullets: [
+      'Life situations',
+      'Reflecting on choices',
+      'What Islam says',
+      'Practical recommendations',
+      'Chat with an AI assistant on the project topic',
     ],
+    cta: 'Go',
   },
   immersivePilgrimage: {
     title: 'Immersive Hajj and Umrah',

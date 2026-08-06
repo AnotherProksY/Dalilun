@@ -1,0 +1,478 @@
+.section {
+  position: relative;
+  width: 100vw;
+  margin-inline-start: calc(50% - 50vw);
+  overflow: hidden;
+}
+
+.bg {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(172deg, rgba(12, 26, 22, 1) 0%, rgba(3, 51, 12, 1) 100%),
+    url('/umma-fest-bg.png') center / cover no-repeat;
+  z-index: 0;
+}
+
+.circleGlow {
+  position: absolute;
+  width: 1550px;
+  height: 1550px;
+  left: calc(50% + 160px);
+  top: 50px;
+  transform: translateX(-50%);
+  background: radial-gradient(
+    circle farthest-side,
+    #00ba3d 0%,
+    rgba(10, 54, 12, 0) 100%
+  );
+  opacity: 0.3;
+  pointer-events: none;
+  z-index: 1;
+
+  @media (max-width: 900px) {
+    width: min(1200px, 200vw);
+    height: min(1200px, 200vw);
+    left: calc(50% + 40px);
+    top: -80px;
+    opacity: 0.25;
+  }
+
+  @media (max-width: 600px) {
+    width: min(900px, 180vw);
+    height: min(900px, 180vw);
+    left: calc(50% + 20px);
+    top: -40px;
+  }
+}
+
+.lantern {
+  position: absolute;
+  right: -50px;
+  bottom: 0;
+  width: 487px;
+  pointer-events: none;
+  z-index: -1;
+
+  @media (max-width: 1350px) {
+    width: 625px;
+    right: -230px;
+    bottom: -240px;
+  }
+
+  @media (max-width: 1099px) {
+    width: 585px;
+    right: -190px;
+    bottom: -80px;
+  }
+
+  @media (max-width: 900px) {
+    width: 585px;
+    right: -140px;
+    bottom: -50px;
+  }
+
+  @media (max-width: 768px) {
+    width: 485px;
+    right: -130px;
+    bottom: -60px;
+  }
+
+  @media (max-width: 600px) {
+    width: 485px;
+    right: -160px;
+    bottom: -160px;
+  }
+}
+
+.lanternImage {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.container {
+  position: relative;
+  z-index: 2;
+  isolation: isolate;
+  padding: 32px 20px 40px;
+
+  @media (min-width: 600px) {
+    padding: 40px 24px 48px;
+  }
+
+  @media (min-width: 768px) {
+    padding: 60px 40px 72px;
+  }
+
+  @media (min-width: 1480px) {
+    padding: 60px 0 72px;
+  }
+}
+
+.logos {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 24px;
+
+  @media (min-width: 600px) {
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+
+  @media (min-width: 768px) {
+    margin-bottom: 40px;
+  }
+}
+
+.dalilunLogo {
+  width: auto;
+  height: 32px;
+
+  @media (min-width: 600px) {
+    height: 40px;
+  }
+
+  @media (min-width: 768px) {
+    height: 59px;
+  }
+}
+
+.ummaLogo {
+  width: auto;
+  height: 40px;
+
+  @media (min-width: 600px) {
+    height: 48px;
+  }
+
+  @media (min-width: 768px) {
+    height: 73px;
+  }
+}
+
+.title {
+  font-family: 'Manrope', sans-serif;
+  font-size: 40px;
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+  color: #fff;
+  max-width: 755px;
+  margin-bottom: 24px;
+
+  @media (min-width: 600px) {
+    font-size: 50px;
+    margin-bottom: 32px;
+  }
+
+  @media (min-width: 768px) {
+    font-size: 80px;
+    line-height: 1.18;
+    margin-bottom: 50px;
+  }
+
+  @media (min-width: 1200px) {
+    font-size: 65px;
+    line-height: 77px;
+  }
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 28px;
+
+  @media (min-width: 600px) {
+    gap: 28px;
+    margin-bottom: 32px;
+  }
+
+  @media (min-width: 1100px) {
+    flex-direction: row;
+    align-items: center;
+    gap: 29px;
+    margin-bottom: 49px;
+  }
+
+  @media (min-width: 1200px) {
+    gap: 100px;
+  }
+}
+
+.infoItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+
+  @media (min-width: 600px) {
+    gap: 12px;
+  }
+}
+
+.infoIcon {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+
+  @media (min-width: 768px) {
+    width: 37px;
+    height: 37px;
+  }
+}
+
+.infoText {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  @media (min-width: 600px) {
+    gap: 10px;
+  }
+
+  @media (min-width: 768px) {
+    gap: 14px;
+  }
+}
+
+.infoPrimary {
+  font-family: 'Manrope', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 20px;
+  color: #fff;
+  margin: 0;
+
+  @media (min-width: 600px) {
+    font-size: 18px;
+    line-height: 22px;
+  }
+
+  @media (min-width: 768px) {
+    font-size: 26px;
+    line-height: 19px;
+  }
+}
+
+.infoSecondary {
+  font-family: 'Manrope', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  color: #fff;
+  margin: 0;
+
+  @media (min-width: 600px) {
+    font-size: 16px;
+    line-height: 20px;
+  }
+
+  @media (min-width: 768px) {
+    font-size: 22px;
+    line-height: 16px;
+  }
+}
+
+.cards {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 757px;
+
+  @media (min-width: 600px) {
+    gap: 14px;
+  }
+
+  @media (min-width: 1100px) {
+    flex-direction: row;
+    align-items: stretch;
+    gap: 20px;
+    max-width: none;
+  }
+}
+
+.card {
+  position: relative;
+  border-radius: 20px;
+  padding: 20px;
+  overflow: hidden;
+  background:
+    radial-gradient(
+      circle at 50% 50%,
+      rgba(102, 102, 102, 0.2436) 0%,
+      rgba(0, 0, 0, 0.0924) 100%
+    ),
+    rgba(2, 10, 6, 0.81);
+  backdrop-filter: blur(52px);
+  -webkit-backdrop-filter: blur(52px);
+  box-shadow: 34px 35px 27.8px 0 rgba(0, 0, 0, 0.15);
+
+  @media (min-width: 600px) {
+    border-radius: 27px;
+    padding: 24px;
+  }
+
+  @media (min-width: 768px) {
+    padding: 36px;
+  }
+
+  @media (min-width: 1100px) {
+    flex: 1 1 553px;
+    max-width: 553px;
+  }
+}
+
+.cardText {
+  font-family: 'Manrope', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.35;
+  letter-spacing: 0.01em;
+  color: #fff;
+  margin: 0;
+
+  @media (min-width: 600px) {
+    font-size: 16px;
+    line-height: 1.3;
+  }
+
+  @media (min-width: 768px) {
+    font-size: 22px;
+  }
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 16px;
+
+  @media (min-width: 600px) {
+    gap: 8px;
+    margin-top: 20px;
+  }
+
+  @media (min-width: 768px) {
+    gap: 10px;
+    margin-top: 24px;
+  }
+}
+
+.tag {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  height: 28px;
+  padding: 0 12px;
+  border-radius: 30px;
+  overflow: hidden;
+  font-family: 'Manrope', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.01em;
+  color: #fbfbfb;
+  background:
+    radial-gradient(circle at 0% 100%, #00ba3d, transparent 40%),
+    radial-gradient(circle at 100% 0%, #00ba3d, transparent 40%), #01521d;
+  white-space: nowrap;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+    background-size: 150px 150px;
+    opacity: 0.06;
+    mix-blend-mode: overlay;
+    pointer-events: none;
+  }
+
+  @media (min-width: 600px) {
+    height: 32px;
+    padding: 0 14px;
+  }
+
+  @media (min-width: 768px) {
+    height: 36px;
+    padding: 0 18px;
+    font-size: 18px;
+  }
+}
+
+.partnerCard {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 12px;
+
+  @media (min-width: 600px) {
+    gap: 16px;
+  }
+
+  @media (min-width: 768px) {
+    gap: 20px;
+  }
+
+  @media (min-width: 1100px) and (max-width: 1350px) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+}
+
+.partnerIcon {
+  flex-shrink: 0;
+  width: 72px;
+  height: auto;
+
+  @media (min-width: 600px) {
+    width: 90px;
+  }
+
+  @media (min-width: 768px) {
+    width: 124px;
+  }
+}
+
+.partnerText {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+
+  @media (min-width: 600px) {
+    gap: 12px;
+  }
+
+  @media (min-width: 768px) {
+    gap: 20px;
+  }
+
+  @media (min-width: 1100px) and (max-width: 1350px) {
+    gap: 12px;
+  }
+}
+
+.partnerLabel {
+  font-family: 'Manrope', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+  color: #fbba0e;
+  margin: 0;
+
+  @media (min-width: 600px) {
+    font-size: 16px;
+  }
+
+  @media (min-width: 768px) {
+    font-size: 18px;
+    line-height: 13px;
+  }
+}

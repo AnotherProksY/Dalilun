@@ -1,5 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
+import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import { ROUTES } from '@/routes'
 import { CtaButton } from '@/components/UI/CtaButton/CtaButton'
 import { Icon } from '@/components/UI/Icon/Icon'
 import styles from './ContactFormBlock.module.scss'
@@ -318,9 +320,9 @@ export function ContactFormBlock() {
                 />
                 <span>
                   {t('contactForm.consentBefore')}
-                  <a href='#' className={styles.consentLink}>
+                  <Link to={ROUTES.personalDataConsent} className={styles.consentLink}>
                     {t('contactForm.consentLink')}
-                  </a>
+                  </Link>
                   {t('contactForm.consentAfter')}
                 </span>
               </label>

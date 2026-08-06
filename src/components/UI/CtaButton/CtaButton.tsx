@@ -15,6 +15,8 @@ interface CtaButtonAsButton extends CtaButtonBaseProps {
 
 interface CtaButtonAsLink extends CtaButtonBaseProps {
   href: string
+  target?: string
+  rel?: string
   type?: never
   disabled?: never
 }
@@ -25,6 +27,8 @@ export function CtaButton({
   children,
   className,
   href,
+  target,
+  rel,
   onClick,
   type = 'button',
   disabled,
@@ -33,7 +37,13 @@ export function CtaButton({
 
   if (href !== undefined) {
     return (
-      <a href={href} className={cls} onClick={onClick}>
+      <a
+        href={href}
+        className={cls}
+        onClick={onClick}
+        target={target}
+        rel={rel}
+      >
         {children}
       </a>
     )
