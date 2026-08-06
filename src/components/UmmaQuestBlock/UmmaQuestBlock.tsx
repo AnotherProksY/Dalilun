@@ -165,79 +165,81 @@ export function UmmaQuestBlock() {
               data-playing={isPlaying ? '' : undefined}
               onPointerLeave={onPhoneFramePointerLeave}
             >
-              <video
-                ref={videoRef}
-                {...videoProps}
-                preload='auto'
-                src={VIDEO_SRC}
-                className={styles.phoneVideo}
-              />
-              <div className={styles.controls}>
-                <div className={styles.seekRow} dir='ltr'>
-                  <button
-                    type='button'
-                    className={styles.playBtn}
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      togglePlay()
-                    }}
-                    aria-label={
-                      isPlaying
-                        ? t('immersivePilgrimage.pauseVideo')
-                        : t('immersivePilgrimage.playVideo')
-                    }
-                  >
-                    {isPlaying ? (
-                      <svg
-                        width='20'
-                        height='20'
-                        viewBox='0 0 28 28'
-                        fill='none'
-                        aria-hidden
-                      >
-                        <rect
-                          x='6'
-                          y='5'
-                          width='6'
-                          height='18'
-                          rx='1'
-                          fill='currentColor'
-                        />
-                        <rect
-                          x='16'
-                          y='5'
-                          width='6'
-                          height='18'
-                          rx='1'
-                          fill='currentColor'
-                        />
-                      </svg>
-                    ) : (
-                      <svg
-                        width='20'
-                        height='20'
-                        viewBox='0 0 28 28'
-                        fill='none'
-                        aria-hidden
-                      >
-                        <path d='M10 6l14 8-14 8V6z' fill='currentColor' />
-                      </svg>
-                    )}
-                  </button>
-                  <span className={styles.time}>{formatTime(currentTime)}</span>
-                  <input
-                    type='range'
-                    className={styles.seek}
-                    style={{ '--progress': `${progressPct}%` } as CSSProperties}
-                    min={0}
-                    max={duration || 0}
-                    step={0.1}
-                    value={Math.min(currentTime, duration || 0)}
-                    disabled={!Number.isFinite(duration) || duration <= 0}
-                    aria-valuetext={`${formatTime(currentTime)} / ${formatTime(duration)}`}
-                    onChange={(e) => onSeek(Number(e.target.value))}
-                  />
-                  <span className={styles.time}>{formatTime(duration)}</span>
+              <div className={styles.screen}>
+                <video
+                  ref={videoRef}
+                  {...videoProps}
+                  preload='auto'
+                  src={VIDEO_SRC}
+                  className={styles.phoneVideo}
+                />
+                <div className={styles.controls}>
+                  <div className={styles.seekRow} dir='ltr'>
+                    <button
+                      type='button'
+                      className={styles.playBtn}
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        togglePlay()
+                      }}
+                      aria-label={
+                        isPlaying
+                          ? t('immersivePilgrimage.pauseVideo')
+                          : t('immersivePilgrimage.playVideo')
+                      }
+                    >
+                      {isPlaying ? (
+                        <svg
+                          width='20'
+                          height='20'
+                          viewBox='0 0 28 28'
+                          fill='none'
+                          aria-hidden
+                        >
+                          <rect
+                            x='6'
+                            y='5'
+                            width='6'
+                            height='18'
+                            rx='1'
+                            fill='currentColor'
+                          />
+                          <rect
+                            x='16'
+                            y='5'
+                            width='6'
+                            height='18'
+                            rx='1'
+                            fill='currentColor'
+                          />
+                        </svg>
+                      ) : (
+                        <svg
+                          width='20'
+                          height='20'
+                          viewBox='0 0 28 28'
+                          fill='none'
+                          aria-hidden
+                        >
+                          <path d='M10 6l14 8-14 8V6z' fill='currentColor' />
+                        </svg>
+                      )}
+                    </button>
+                    <span className={styles.time}>{formatTime(currentTime)}</span>
+                    <input
+                      type='range'
+                      className={styles.seek}
+                      style={{ '--progress': `${progressPct}%` } as CSSProperties}
+                      min={0}
+                      max={duration || 0}
+                      step={0.1}
+                      value={Math.min(currentTime, duration || 0)}
+                      disabled={!Number.isFinite(duration) || duration <= 0}
+                      aria-valuetext={`${formatTime(currentTime)} / ${formatTime(duration)}`}
+                      onChange={(e) => onSeek(Number(e.target.value))}
+                    />
+                    <span className={styles.time}>{formatTime(duration)}</span>
+                  </div>
                 </div>
               </div>
             </div>
