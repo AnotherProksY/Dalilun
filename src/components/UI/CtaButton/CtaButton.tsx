@@ -11,6 +11,8 @@ interface CtaButtonAsButton extends CtaButtonBaseProps {
   href?: undefined
   type?: 'button' | 'submit' | 'reset'
   disabled?: boolean
+  target?: never
+  rel?: never
 }
 
 interface CtaButtonAsLink extends CtaButtonBaseProps {
