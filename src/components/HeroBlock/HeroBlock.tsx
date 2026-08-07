@@ -3,7 +3,6 @@ import { useTranslation } from 'react-i18next'
 import Galaxy from '@/components/Galaxy/Galaxy'
 import { CtaButton } from '@/components/UI/CtaButton/CtaButton'
 import styles from '@/components/HeroBlock/HeroBlock.module.scss'
-import { smoothAnchorClickNavigation } from '@/scrollToAnchor'
 
 /** Сила общего мышиного эффекта на CTA */
 const HERO_CTA_GALAXY_BOOST = 4.8
@@ -84,9 +83,10 @@ export function HeroBlock() {
           style={{ pointerEvents: 'auto' }}
         >
           <CtaButton
-            href='#contact-form'
+            href='https://app.dalilunfaith.tech/app'
             className={styles.cta}
-            onClick={(e) => smoothAnchorClickNavigation(e.nativeEvent, 'contact-form')}
+            target='_blank'
+            rel='noopener noreferrer'
           >
             {t('hero.cta')}
           </CtaButton>
