@@ -9,13 +9,15 @@ import { UmmaQuestBlock } from '@/components/UmmaQuestBlock/UmmaQuestBlock'
 import { ContactFormBlock } from '@/components/ContactFormBlock/ContactFormBlock'
 import { UmmaFestPosterBlock } from '@/components/UmmaFestPosterBlock/UmmaFestPosterBlock'
 
+const SHOW_UMMA_FEST_BANNER = false
+
 export function MainPage() {
   return (
     <MainLayout>
       <Container>
         <HeroBlock />
       </Container>
-      <UmmaFestPosterBlock />
+      {SHOW_UMMA_FEST_BANNER && <UmmaFestPosterBlock />}
       <Container>
         <WeHelpBlock />
       </Container>
